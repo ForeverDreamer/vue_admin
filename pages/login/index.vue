@@ -5,7 +5,7 @@
         <el-col :xs="24" :sm="21" :md="17" :lg="14" :xl="10">
           <el-card>
             <div slot="header">
-              <h1>{{ logo }}</h1>
+              <h1>{{ $conf.logo }}</h1>
             </div>
             <el-form ref="ruleForm" :model="form" :rules="rules">
               <el-form-item prop="userName">
@@ -17,7 +17,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="medium" @click="submitForm('ruleForm')">立即登录</el-button>
+                <el-button type="primary" size="medium" @click.prevent="submitForm('ruleForm')">立即登录</el-button>
               </el-form-item>
             </el-form>
           </el-card>
@@ -28,11 +28,14 @@
 </template>
 
 <script>
-import config from '@/mixins/config'
-
 export default {
   name: 'Index',
-  mixins: [config],
+  beforeCreate () {
+    if (this.$store.getters.isAuthenticated) {
+      console.log('beforeCreate: ' + this.$store.getters.isAuthenticated)
+      this.$router.push('/home')
+    }
+  },
   data () {
     return {
       form: {
@@ -42,7 +45,7 @@ export default {
       rules: {
         userName: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 4, max: 10, message: '长度在 4 到 10 个字符', trigger: 'blur' }
+          { min: 4, max: 15, message: '长度在 4 到 10 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -55,14 +58,22 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.$store.dispatch(
+            'authenticateUser',
+            {
+              username: this.form.userName,
+              password: this.form.password
+            })
+          // .then(() => {
+          //   this.$router.push('/home')
+          // })
         } else {
           console.log('error submit!!')
-          return false
         }
       })
     }
-  }
+  },
+  layout: 'login'
 }
 </script>
 

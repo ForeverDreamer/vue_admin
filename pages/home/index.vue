@@ -5,6 +5,7 @@
 <script>
 export default {
   name: 'Index'
+  // middleware: 'log'
 }
 </script>
 

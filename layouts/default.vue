@@ -1,7 +1,7 @@
 <template>
   <el-container class="el-container__outer">
     <el-header class="d-flex align-items-center">
-      <nuxt-link to="/" class="h5 text-light mb-0 mr-auto">{{ logo }}</nuxt-link>
+      <nuxt-link to="/" class="h5 text-light mb-0 mr-auto">{{ $conf.logo }}</nuxt-link>
       <el-menu
         default-active="0"
         mode="horizontal"
@@ -40,11 +40,13 @@
 </template>
 
 <script>
-import config from '@/mixins/config'
-import common from '@/mixins/common'
+// import config from '@/utils/mixins/config'
+import common from '@/utils/mixins/common'
 
 export default {
-  mixins: [config, common],
+  // mixins: [config, common],
+  middleware: ['auth', 'log'],
+  mixins: [common],
   data () {
     return {
       headerNavMenu: {
@@ -207,10 +209,6 @@ export default {
 
   .el-main {
     background-color: #E9EEF3;
-  }
-  li a {
-    width: 100%;
-    height: 100%;
   }
 
   /*.button--green {*/
