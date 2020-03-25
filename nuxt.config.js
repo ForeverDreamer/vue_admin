@@ -31,7 +31,8 @@ export default {
   */
   plugins: [
     '@/plugins/element-ui',
-    '~plugins/main.js'
+    '~plugins/main.js',
+    '~plugins/network.js'
   ],
   /*
   ** Nuxt.js dev-modules

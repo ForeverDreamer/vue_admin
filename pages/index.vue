@@ -8,12 +8,7 @@
 
 export default {
   created () {
-    const isLogin = true
-    if (isLogin) {
-      this.$router.push('/home')
-    } else {
-      this.$router.push('/login')
-    }
+    this.$router.push('/home')
   }
 }
 </script>

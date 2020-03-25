@@ -13,16 +13,17 @@ const createStore = () => {
     mutations: {
       setToken (state, token) {
         state.token = token
+        this.$axios.setToken(token.access, 'Bearer')
+        // this.$axios.setHeader('Authorization', 'Bearer ' + token.access)
         // http request 拦截器
-        this.$axios.interceptors.request.use(
-          (config) => {
-            const accessToken = token.access
-            config.headers.Authorization = 'Bearer ' + accessToken
-            return config
-          },
-          (err) => {
-            return Promise.reject(err)
-          })
+        // this.$axios.interceptors.request.use(
+        //   (config) => {
+        //     config.headers.Authorization = 'Bearer ' + token.access
+        //     return config
+        //   },
+        //   (err) => {
+        //     return Promise.reject(err)
+        //   })
       },
       clearToken (state) {
         state.token.refresh = null
@@ -44,6 +45,7 @@ const createStore = () => {
           .then((result) => {
             console.log(result)
             vuexContext.commit('setToken', result.data.token)
+            this.$router.push('/home')
           })
           .catch(e => console.log('login => ' + e))
       }

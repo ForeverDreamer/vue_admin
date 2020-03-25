@@ -24,6 +24,7 @@
         </el-col>
       </el-row>
     </el-main>
+    <el-button type="primary" @click.prevent="getData">获取首页数据测试</el-button>
   </el-container>
 </template>
 
@@ -31,8 +32,8 @@
 export default {
   name: 'Index',
   beforeCreate () {
+    console.log('beforeCreate: ' + this.$store.getters.isAuthenticated)
     if (this.$store.getters.isAuthenticated) {
-      console.log('beforeCreate: ' + this.$store.getters.isAuthenticated)
       this.$router.push('/home')
     }
   },
@@ -64,13 +65,27 @@ export default {
               username: this.form.userName,
               password: this.form.password
             })
-          // .then(() => {
-          //   this.$router.push('/home')
-          // })
+            .then(() => {
+              // this.$router.push('/home')
+              // this.$axios.$get(
+              //   '/product/recommends/')
+              //   .then((result) => {
+              //     console.log(result)
+              //   })
+              //   .catch(e => console.log('/product/recommends/ => ' + e))
+            })
         } else {
           console.log('error submit!!')
         }
       })
+    },
+    getData () {
+      this.$axios.$get(
+        '/product/recommends/')
+        .then((result) => {
+          console.log(result)
+        })
+        .catch(e => console.log('/product/recommends/ => ' + e))
     }
   },
   layout: 'login'
