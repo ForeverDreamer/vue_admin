@@ -45,7 +45,7 @@ import common from '@/utils/mixins/common'
 
 export default {
   // mixins: [config, common],
-  middleware: ['auth', 'log'],
+  middleware: ['init-auth', 'auth', 'log'],
   mixins: [common],
   data () {
     return {

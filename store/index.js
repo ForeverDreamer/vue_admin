@@ -6,7 +6,7 @@ const createStore = () => {
   return new Vuex.Store({
     state: {
       token: {
-        refresh: null,
+        exp: null,
         access: null
       }
     },
@@ -26,7 +26,7 @@ const createStore = () => {
         //   })
       },
       clearToken (state) {
-        state.token.refresh = null
+        state.token.exp = null
         state.token.access = null
       }
     },
@@ -44,10 +44,30 @@ const createStore = () => {
           })
           .then((result) => {
             console.log(result)
-            vuexContext.commit('setToken', result.data.token)
+            const token = result.data.token
+            vuexContext.commit('setToken', token)
+            localStorage.setItem('token', token.access)
+            localStorage.setItem('tokenExpiration', token.exp)
             this.$router.push('/home')
           })
           .catch(e => console.log('login => ' + e))
+      },
+      initAuth (vuexContext) {
+        const token = {}
+        token.access = localStorage.getItem('token')
+        token.exp = +localStorage.getItem('tokenExpiration')
+        const timeStamp = Math.floor(new Date().getTime() / 1000)
+        if (timeStamp > token.exp || !token) {
+          console.log('No token or invalid token')
+          vuexContext.dispatch('logout')
+          return
+        }
+        vuexContext.commit('setToken', token)
+      },
+      logout (vuexContext) {
+        vuexContext.commit('clearToken')
+        localStorage.removeItem('token')
+        localStorage.removeItem('tokenExpiration')
       }
     },
     getters: {

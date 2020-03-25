@@ -24,7 +24,7 @@
         </el-col>
       </el-row>
     </el-main>
-    <el-button type="primary" @click.prevent="getData">获取首页数据测试</el-button>
+<!--    <el-button type="primary" @click.prevent="getData">获取首页数据测试</el-button>-->
   </el-container>
 </template>
 
@@ -32,7 +32,6 @@
 export default {
   name: 'Index',
   beforeCreate () {
-    console.log('beforeCreate: ' + this.$store.getters.isAuthenticated)
     if (this.$store.getters.isAuthenticated) {
       this.$router.push('/home')
     }
