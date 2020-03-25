@@ -30,10 +30,15 @@
             <i :class="item.icon"></i>
             <span slot="title">{{ item.name }}</span>
           </el-menu-item>
+          <li v-for="i in 100" :key="i">{{ i }}</li>
         </el-menu>
       </el-aside>
-      <el-main>
+      <el-main class="bg-light">
         <nuxt />
+
+        <el-backtop target=".el-main" :bottom="40">
+          <div class="backtop">顶</div>
+        </el-backtop>
       </el-main>
     </el-container>
   </el-container>
@@ -188,9 +193,20 @@ export default {
     margin: 0;
   }
 
-  .el-container__outer {
+  .backtop {
     /*position: absolute;*/
-    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: #f2f5f6;
+    box-shadow: 0 0 6px rgba(0,0,0, .12);
+    text-align: center;
+    line-height: 40px;
+    color: #1989fa;
+  }
+
+  .el-container__outer {
+    /*position: fixed;*/
+    position: absolute;
     left: 0;
     right: 0;
     top: 0;
@@ -198,10 +214,10 @@ export default {
     overflow: hidden;
   }
 
-  /*.el-container__inner {*/
-  /*  height: 100%;*/
-  /*  padding-bottom: 4rem;*/
-  /*}*/
+  .el-container__inner {
+    height: 100%;
+    padding-bottom: 4rem;
+  }
 
   .el-header {
     background-color: #545c64;

@@ -1,12 +1,14 @@
 <template>
-  <el-container>
-    <el-breadcrumb class="border-bottom p-1" separator="/">
+  <el-container direction="vertical">
+    <el-breadcrumb class="border-bottom p-2 m-n2" separator="/">
       <el-breadcrumb-item v-for="(item, index) in breadArray" :key="index" :to="{ path: item.path }">
         {{ item.name }}
       </el-breadcrumb-item>
     </el-breadcrumb>
+    <li v-for="i in 100" :key="i">{{ i }}</li>
 <!--    <p>{{ homeData }}</p>-->
   </el-container>
+
 </template>
 
 <script>
@@ -20,6 +22,14 @@ export default {
         {
           name: '后台首页',
           path: ''
+        },
+        {
+          name: '用户管理',
+          path: ''
+        },
+        {
+          name: '相册管理',
+          path: ''
         }
       ]
     }
@@ -29,6 +39,7 @@ export default {
       this.$axios.$get(
         '/product/recommends/')
         .then((data) => {
+          console.log(JSON.stringify(data))
           this.homeData = data
         })
         .catch(e => console.log('/product/recommends/ => ' + e))
