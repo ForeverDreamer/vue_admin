@@ -1,73 +1,43 @@
 <template>
-  <el-container direction="vertical">
-    <el-breadcrumb class="border-bottom p-2 m-n2" separator="/">
-      <el-breadcrumb-item v-for="(item, index) in breadArray" :key="index" :to="{ path: item.path }">
-        {{ item.name }}
-      </el-breadcrumb-item>
-    </el-breadcrumb>
-    <li v-for="i in 100" :key="i">{{ i }}</li>
-<!--    <p>{{ homeData }}</p>-->
-  </el-container>
-
+  <div>
+    <el-row>
+      <el-col :span="6" v-for="(item, index) in statisticalType" :key="index">
+        <el-card shadow="hover">
+          <div class="d-flex align-items-center">
+            <i :class="[item.icon, item.color]" class="h4 text-white text-center card-icon__size mr-3 mb-0"></i>
+            <div class="card-info__size">
+              <h4 class="text-left mb-0">{{ item.count }}</h4>
+              <h7 class="text-muted">{{ item.desc }}</h7>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'Index',
-  // middleware: 'log'
   data () {
     return {
-      homeData: {},
-      breadArray: [
-        {
-          name: '后台首页',
-          path: ''
-        },
-        {
-          name: '用户管理',
-          path: ''
-        },
-        {
-          name: '相册管理',
-          path: ''
-        }
+      statisticalType: [
+        { icon: 'el-icon-user-solid', color: 'bg-primary', count: 30, desc: '关注人数(个)' },
+        { icon: 'el-icon-s-finance', color: 'bg-success', count: 120, desc: '订单总数(笔)' },
+        { icon: 'el-icon-s-order', color: 'bg-danger', count: 4183.80, desc: '今日订单总金额(元)' },
+        { icon: 'el-icon-s-data', color: 'bg-warning', count: 100, desc: '本月销量(笔)' }
       ]
     }
-  },
-  methods: {
-    initData () {
-      this.$axios.$get(
-        '/product/recommends/')
-        .then((data) => {
-          console.log(JSON.stringify(data))
-          this.homeData = data
-        })
-        .catch(e => console.log('/product/recommends/ => ' + e))
-    }
-    // 获取面包屑路由
-    // getRouterBread () {
-    //   const bread = this.$route.matched.filter(v => v.name)
-    //   const arr = []
-    //   bread.forEach((v, k) => {
-    //     arr.push({
-    //       name: v.name,
-    //       path: v.path
-    //     })
-    //   })
-    //   if (arr.length > 0) {
-    //     arr.unshift({ name: 'home', path: '/home', title: '后台首页' })
-    //     this.breadArray = arr
-    //   }
-    // }
-  },
-  created () {
-    // this.initData()
   }
 }
 </script>
 
 <style scoped>
-  /*.el-main {*/
-  /*  padding: 0!important;*/
-  /*}*/
+  .card-icon__size {
+    width: 3rem;
+    line-height: 3rem;
+  }
+  .card-info__size {
+    line-height: 2rem;
+  }
 </style>

@@ -30,7 +30,7 @@
             <i :class="item.icon"></i>
             <span slot="title">{{ item.name }}</span>
           </el-menu-item>
-          <li v-for="i in 100" :key="i">{{ i }}</li>
+<!--          <li v-for="i in 100" :key="i">{{ i }}</li>-->
         </el-menu>
       </el-aside>
       <el-main class="bg-light">
@@ -46,12 +46,12 @@
 
 <script>
 // import config from '@/utils/mixins/config'
-import common from '@/utils/mixins/common'
+// import common from '@/utils/mixins/common'
 
 export default {
   // mixins: [config, common],
   middleware: ['init-auth', 'auth', 'log'],
-  mixins: [common],
+  // mixins: [common],
   data () {
     return {
       headerNavMenu: {

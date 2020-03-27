@@ -7,7 +7,7 @@
             <div slot="header">
               <h1>{{ $conf.logo }}</h1>
             </div>
-            <el-form ref="ruleForm" :model="form" :rules="rules">
+            <el-form ref="loginForm" :model="form" :rules="rules">
               <el-form-item prop="userName">
                 <el-input v-model="form.userName" size="medium" placeholder="请输入用户名">
                 </el-input>
@@ -17,7 +17,8 @@
                 </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="medium" @click.prevent="submitForm('ruleForm')">立即登录</el-button>
+<!--                <el-button type="primary" size="medium" @click.prevent="submitForm('loginForm')">立即登录</el-button>-->
+                <el-button type="primary" size="medium" @click.prevent="submitForm()">立即登录</el-button>
               </el-form-item>
             </el-form>
           </el-card>
@@ -55,8 +56,9 @@ export default {
     }
   },
   methods: {
-    submitForm (formName) {
-      this.$refs[formName].validate((valid) => {
+    submitForm () {
+      // this.$refs['loginForm'].validate((valid) => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.$store.dispatch(
             'authenticateUser',
