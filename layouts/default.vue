@@ -24,7 +24,7 @@
       </el-menu>
     </el-header>
     <el-container class="el-container__inner">
-      <el-aside>
+      <el-aside width="200px">
         <el-menu :default-active="asideActiveIndex" @select="asideSelect">
           <el-menu-item :key="index" v-for="(item, index) in asideMenu" :index="index|numToString">
             <i :class="item.icon"></i>
