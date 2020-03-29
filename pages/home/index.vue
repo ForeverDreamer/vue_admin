@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-3">
     <!--统计数据概览-->
     <el-row :gutter="20">
       <el-col v-for="(item, index) in statOverview" :key="index" :xs="24" :sm="12" :md="6">
@@ -63,6 +63,56 @@
         </el-card>
       </el-col>
     </el-row>
+    <!--销售情况统计 | 单品销售排名-->
+    <el-row :gutter="20" class="mt-3">
+      <el-col :xs="24" :md="12" class="d-flex flex-column justify-content-between h-100">
+        <el-card>
+          <div slot="header" class="clearfix">
+            <span>销售情况统计</span>
+            <el-button style="float: right; padding: 3px 0" type="text">按周期统计商家店铺的订单量和订单金额</el-button>
+          </div>
+          <ul class="list-unstyled my-n2">
+            <b-media tag="li" vertical-align="center" class="border p-1 my-2" v-for="i in 3" :key="i">
+              <template v-slot:aside>
+                <span>昨日销量</span>
+              </template>
+              <div class="border-left pl-3">
+                <div class="border-bottom py-1">订单量(1件)</div>
+                <div class="py-1">订单量(2件)</div>
+              </div>
+            </b-media>
+          </ul>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :md="12">
+        <el-card>
+          <div slot="header" class="clearfix">
+            <span>单品销售排名</span>
+            <el-button style="float: right; padding: 3px 0" type="text">按周期统计商家店铺的订单量和订单金额</el-button>
+          </div>
+          <el-table
+            :data="tableData"
+            height="241"
+            border
+            style="width: 100%">
+            <el-table-column
+              type="index"
+              label="#"
+              width="50">
+            </el-table-column>
+            <el-table-column
+              prop="productInfo"
+              label="商品信息">
+            </el-table-column>
+            <el-table-column
+              prop="salesVolume"
+              label="销量"
+              width="50">
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -92,7 +142,33 @@ export default {
         },
         transaction: {},
         order: {}
-      }
+      },
+      tableData: [
+        {
+          productInfo: '小天鹅(LittleSwan)滚筒洗衣机',
+          salesVolume: '9'
+        },
+        {
+          productInfo: '小天鹅(LittleSwan)滚筒洗衣机',
+          salesVolume: '9'
+        },
+        {
+          productInfo: '小天鹅(LittleSwan)滚筒洗衣机',
+          salesVolume: '9'
+        },
+        {
+          productInfo: '小天鹅(LittleSwan)滚筒洗衣机',
+          salesVolume: '9'
+        },
+        {
+          productInfo: '小天鹅(LittleSwan)滚筒洗衣机',
+          salesVolume: '9'
+        },
+        {
+          productInfo: '小天鹅(LittleSwan)滚筒洗衣机',
+          salesVolume: '9'
+        }
+      ]
     }
   },
   computed: {

@@ -1,6 +1,6 @@
 <template>
   <el-container direction="vertical">
-    <el-breadcrumb class="border-bottom p-2 m-n2" separator="/">
+    <el-breadcrumb class="border-bottom pb-2 m-1" separator="/">
       <el-breadcrumb-item v-for="(item, index) in breadArray" :key="index" :to="{ path: item.path }">
         {{ item.name }}
       </el-breadcrumb-item>
