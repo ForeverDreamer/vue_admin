@@ -5,12 +5,12 @@
       <el-menu
         default-active="0"
         mode="horizontal"
-        @select="headerSelect"
         background-color="#545c64"
         text-color="#fff"
-        active-text-color="#ffd04b">
+        active-text-color="#ffd04b"
+        @select="headerSelect">
         <el-menu-item :index="index|numToString" v-for="(item, index) in headerNavMenu.categories" :key="index">
-<!--          <nuxt-link :to="item.url">{{ item.name }}</nuxt-link>-->
+          <!--<nuxt-link :to="item.url">{{ item.name }}</nuxt-link>-->
           {{ item.name }}
         </el-menu-item>
         <el-submenu :index="submenuIndex|numToString">
@@ -160,6 +160,7 @@ export default {
   },
   methods: {
     headerSelect (key, keyPath) {
+      console.log(key, keyPath)
       this.headerNavMenu.activeIndex = key
       // nuxt-link可点击区域仅限于文字，经常点不到，用户体验不好
       const url = this.headerNavMenu.categories[key].url
