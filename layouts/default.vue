@@ -30,7 +30,7 @@
             <i :class="item.icon"></i>
             <span slot="title">{{ item.name }}</span>
           </el-menu-item>
-<!--          <li v-for="i in 100" :key="i">{{ i }}</li>-->
+          <!--<li v-for="i in 100" :key="i">{{ i }}</li>-->
         </el-menu>
       </el-aside>
       <el-main class="bg-light">
@@ -63,12 +63,14 @@ export default {
             subActiveIndex: '0',
             submenu: [
               {
+                url: '/home',
                 icon: 'el-icon-s-home',
-                name: '后台首页1'
+                name: '后台首页'
               },
               {
+                url: '/home/photo',
                 icon: 'el-icon-s-operation',
-                name: '商品列表1'
+                name: '相册管理'
               }
             ]
           },
@@ -165,6 +167,7 @@ export default {
     },
     asideSelect (key, keyPath) {
       this.asideActiveIndex = key
+      this.$router.push(this.asideMenu[key].url)
     }
   },
   created () {
@@ -215,6 +218,7 @@ export default {
   }
 
   .el-container__inner {
+    position: relative;
     height: 100%;
     padding-bottom: 4rem;
   }
