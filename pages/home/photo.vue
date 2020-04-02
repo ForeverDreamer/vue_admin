@@ -20,46 +20,71 @@
       <el-button size="medium" type="success" @click="openEditForm(null)">
         创建相册
       </el-button>
-      <el-button size="medium" type="warning">
+      <el-button size="medium" type="warning" @click="uploadDialogVisible = true">
         上传图片
       </el-button>
     </el-header>
     <el-container>
       <el-aside width="200px">
         <ul class="list-group list-group-flush">
-          <li
+          <album-item
             v-for="(item, index) in albums"
             :key="index"
-            class="list-group-item list-group-item-action d-flex align-items-center"
-            :class="{'active doer-active': activeIndex === index}"
-            @click.stop="changeAlbum(index)"
-          >
-            {{ item.name }}
-            <el-dropdown class="ml-auto">
-              <span class="btn btn-light btn-sm border">
-                {{ item.num }}<i class="el-icon-arrow-down el-icon--right"/>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.stop.native="openEditForm({item, index})">编辑</el-dropdown-item>
-                <el-dropdown-item @click.stop.native="delAlbum(index)">删除</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </li>
+            :item="item"
+            :index="index"
+            :active="activeIndex === index"
+            @change="changeAlbum"
+            @edit="openEditForm"
+            @del="delAlbum"
+          />
         </ul>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <el-row :gutter="10">
+          <el-col
+            v-for="i in 10"
+            :key="i"
+            :xs="24"
+            :sm="12"
+            :md="8"
+            :lg="4"
+          >
+            <el-card class="position-relative mb-3" :body-style="{ padding: '0px' }" shadow="hover" style="cursor: pointer">
+              <div class="demo-image__preview w-100">
+                <el-image
+                  style="height: 100px"
+                  :src="previewImgs.url"
+                  :preview-src-list="previewImgs.srcList"
+                  fit="fill">
+                </el-image>
+              </div>
+              <div class="w-100 mt-n4 text-white position-absolute" style="background: rgba(0,0,0,0.5)">
+                好吃的汉堡
+              </div>
+              <div class="p-2 text-center">
+                <el-button-group>
+                  <el-button icon="el-icon-view" size="mini" class="p-2" @click="previewImage"></el-button>
+                  <el-button icon="el-icon-edit" size="mini" class="p-2"></el-button>
+                  <el-button icon="el-icon-delete" size="mini" class="p-2"></el-button>
+                </el-button-group>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-main>
     </el-container>
     <el-footer>Footer</el-footer>
     <el-dialog
-      title="修改相册"
+      :title="editFormTitle"
       :visible.sync="dialogVisible"
-      width="30%">
+      width="30%"
+    >
       <el-form ref="editForm" :model="editForm" label-width="80px">
         <el-form-item label="名称">
-          <el-input v-model="editForm.name" size="medium" placeholder="请输入相册名称"></el-input>
+          <el-input v-model="editForm.name" size="medium" placeholder="请输入相册名称" />
         </el-form-item>
         <el-form-item label="排序">
-          <el-input-number v-model="editForm.order" :min="0" size="small"></el-input-number>
+          <el-input-number v-model="editForm.order" :min="0" size="small" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -67,14 +92,50 @@
         <el-button type="primary" @click="confirmEdit">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="上传图片"
+      :visible.sync="uploadDialogVisible"
+      width="30%"
+    >
+      <div class="text-center">
+        <el-upload
+          class="upload-demo"
+          drag
+          action="https://jsonplaceholder.typicode.com/posts/"
+          multiple
+        >
+          <i class="el-icon-upload" />
+          <div class="el-upload__text">
+            将文件拖到此处，或<em>点击上传</em>
+          </div>
+          <div slot="tip" class="el-upload__tip">
+            只能上传jpg/png文件，且不超过500kb
+          </div>
+        </el-upload>
+      </div>
+    </el-dialog>
   </el-container>
 </template>
 
 <script>
+import albumItem from '@/components/image/album-item'
+
 export default {
   name: 'Photo',
+  components: {
+    albumItem
+  },
   data () {
     return {
+      previewImgs: {
+        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+        // url封面图必须再srcList中，否则第一张图片显示不出来，且第一张预览图默认时封面缩略图
+        srcList: [
+          'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+          'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
+          'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'
+        ]
+      },
       searchInfo: {
         orderBy: '相册名称',
         keyword: '图片数量'
@@ -86,7 +147,13 @@ export default {
         name: '',
         order: '',
         editIndex: -1
-      }
+      },
+      uploadDialogVisible: false
+    }
+  },
+  computed: {
+    editFormTitle () {
+      return this.editForm.editIndex > -1 ? '编辑相册' : '创建相册'
     }
   },
   created () {
@@ -226,9 +293,6 @@ export default {
     left: 200px;
     bottom: 60px;
     right: 0;
-    color: #333;
-    text-align: center;
-    line-height: 160px;
   }
 
   /*body > .el-container {*/
