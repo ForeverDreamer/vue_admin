@@ -13,14 +13,20 @@
           />
         </el-select>
         <el-input v-model="searchInfo.keyword" placeholder="请输入相册名称" size="medium" class="mr-2" />
-        <el-button size="medium" type="success">
+        <el-button type="success" size="medium">
           搜索
         </el-button>
       </div>
-      <el-button size="medium" type="success" @click="openEditForm(null)">
+      <el-button v-if="imageSlectedList.length > 0" type="warning" size="medium" @click="cancelSelected">
+        取消选中
+      </el-button>
+      <el-button v-if="imageSlectedList.length > 0" type="danger" size="medium" @click="batchDelImage">
+        批量删除
+      </el-button>
+      <el-button type="success" size="medium" @click="openEditForm(null)">
         创建相册
       </el-button>
-      <el-button size="medium" type="warning" @click="uploadDialogVisible = true">
+      <el-button type="warning" size="medium" @click="uploadDialogVisible = true">
         上传图片
       </el-button>
     </el-header>
@@ -42,38 +48,53 @@
       <el-main>
         <el-row :gutter="10">
           <el-col
-            v-for="i in 10"
-            :key="i"
+            v-for="(item, index) in imageList"
+            :key="index"
             :xs="24"
             :sm="12"
             :md="8"
             :lg="4"
           >
             <el-card class="position-relative mb-3" :body-style="{ padding: '0px' }" shadow="hover" style="cursor: pointer">
-              <div class="demo-image__preview w-100">
-                <el-image
-                  style="height: 100px"
-                  :src="previewImgs.url"
-                  :preview-src-list="previewImgs.srcList"
-                  fit="fill">
-                </el-image>
-              </div>
-              <div class="w-100 mt-n4 text-white position-absolute" style="background: rgba(0,0,0,0.5)">
-                好吃的汉堡
-              </div>
-              <div class="p-2 text-center">
-                <el-button-group>
-                  <el-button icon="el-icon-view" size="mini" class="p-2" @click="previewImage"></el-button>
-                  <el-button icon="el-icon-edit" size="mini" class="p-2"></el-button>
-                  <el-button icon="el-icon-delete" size="mini" class="p-2"></el-button>
-                </el-button-group>
+              <div class="border" :class="{'border-danger': item.selected}" @click="imgSelected(item)">
+                <!--                bootstrap比加载element效率高，避免卡顿-->
+                <span v-if="item.selected" class="badge badge-danger position-absolute" style="top: 0; right: 0; z-index: 1">
+                  {{ item.selectOrder }}
+                </span>
+                <!--                <el-tag-->
+                <!--                  class="position-absolute"-->
+                <!--                  style="top: 0; right: 0; z-index: 1"-->
+                <!--                  type="danger"-->
+                <!--                  effect="dark"-->
+                <!--                  size="mini"-->
+                <!--                  v-if="item.selected">-->
+                <!--                  1-->
+                <!--                </el-tag>-->
+                <div class="demo-image__preview w-100" @click.stop="">
+                  <el-image
+                    style="height: 100px"
+                    :src="item.url"
+                    :preview-src-list="item.srcList"
+                    fit="fill"
+                    alt="点击预览图片"
+                  />
+                </div>
+                <div class="w-100 mt-n4 text-white position-absolute p-1" style="background: rgba(0,0,0,0.5)">
+                  <span>{{ item.name }}</span>
+                </div>
+                <div class="p-2 text-center">
+                  <el-button-group>
+                    <!--                  <el-button icon="el-icon-view" size="mini" class="p-2" @click="previewImage"></el-button>-->
+                    <el-button icon="el-icon-edit" size="mini" class="p-2" @click.stop="editImage(item, index)" />
+                    <el-button icon="el-icon-delete" size="mini" class="p-2" @click.stop="delImage(index)" />
+                  </el-button-group>
+                </div>
               </div>
             </el-card>
           </el-col>
         </el-row>
       </el-main>
     </el-container>
-    <el-footer>Footer</el-footer>
     <el-dialog
       :title="editFormTitle"
       :visible.sync="dialogVisible"
@@ -114,6 +135,29 @@
         </el-upload>
       </div>
     </el-dialog>
+    <el-footer class="border-top d-flex align-items-center px-0">
+      <div style="width: 200px" class="h-100 d-flex align-items-center justify-content-center flex-shrink-0 border-right">
+        <el-button-group>
+          <el-button icon="el-icon-arrow-left" size="mini">
+            上一页
+          </el-button>
+          <el-button size="mini">
+            下一页<i class="el-icon-arrow-right el-icon--right" />
+          </el-button>
+        </el-button-group>
+      </div>
+      <div class="flex-grow-1 px-2">
+        <el-pagination
+          :current-page="currentPage"
+          :page-sizes="[100, 200, 300, 400]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
+    </el-footer>
   </el-container>
 </template>
 
@@ -127,15 +171,9 @@ export default {
   },
   data () {
     return {
-      previewImgs: {
-        url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-        // url封面图必须再srcList中，否则第一张图片显示不出来，且第一张预览图默认时封面缩略图
-        srcList: [
-          'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-          'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
-          'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'
-        ]
-      },
+      // url封面图必须再srcList中，否则第一张图片显示不出来，且第一张预览图默认时封面缩略图
+      imageList: [],
+      imageSlectedList: [],
       searchInfo: {
         orderBy: '相册名称',
         keyword: '图片数量'
@@ -148,7 +186,8 @@ export default {
         order: '',
         editIndex: -1
       },
-      uploadDialogVisible: false
+      uploadDialogVisible: false,
+      currentPage: 1
     }
   },
   computed: {
@@ -166,6 +205,20 @@ export default {
           name: '相册' + i,
           num: Math.floor(Math.random() * 100),
           order: 0
+        })
+      }
+      for (let i = 0; i < 30; i++) {
+        this.imageList.push({
+          id: i,
+          name: '图片' + i,
+          url: 'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg',
+          srcList: [
+            'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+            'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
+            'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'
+          ],
+          selected: false,
+          selectOrder: 0
         })
       }
     },
@@ -227,6 +280,100 @@ export default {
     editAlbum () {
       this.albums[this.editForm.editIndex].name = this.editForm.name
       this.albums[this.editForm.editIndex].order = this.editForm.order
+    },
+    editImage (item, index) {
+      this.$prompt('请输入新名称', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputValue: item.name,
+        inputValidator (value) {
+          if (value === '') {
+            return '图片名称不能为空'
+          }
+        }
+      }).then(({ value }) => {
+        item.name = value
+        this.$message({
+          type: 'success',
+          message: '修改成功'
+        })
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: '取消输入'
+        // })
+      })
+    },
+    delImage (index) {
+      this.$confirm('是否删除该图片', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.imageList.splice(index, 1)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {})
+    },
+    batchDelImage () {
+      this.$confirm('是否删除选中的所有图片', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const leftImages = this.imageList.filter((image) => {
+          return !this.imageSlectedList.some(c => c.id === image.id)
+        })
+        this.imageList = leftImages
+        this.imageSlectedList = []
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {})
+    },
+    imgSelected (item) {
+      // 取消选中
+      if (item.selected) {
+        const index = this.imageSlectedList.findIndex(v => v.id === item.id)
+        if (index === -1) { return }
+        // 如果取消选中非最后一个，重新计算选中序号
+        const len = this.imageSlectedList.length
+        if (index + 1 < len) {
+          for (let j = index; j < len; j++) {
+            const i = this.imageList.findIndex(v => v.id === this.imageSlectedList[j].id)
+            if (i > -1) {
+              this.imageList[i].selectOrder--
+            }
+          }
+        }
+        this.imageSlectedList.splice(index, 1)
+        item.selected = false
+        item.selectOrder = 0
+      } else {
+        // 选中
+        this.imageSlectedList.push({ id: item.id, url: item.url })
+        item.selectOrder = this.imageSlectedList.length
+        item.selected = true
+      }
+    },
+    cancelSelected () {
+      this.imageList.forEach((imageOuter) => {
+        const index = this.imageSlectedList.findIndex(imageInner => imageInner.id === imageOuter.id)
+        if (index > -1) {
+          imageOuter.selected = false
+          imageOuter.selectOrder = 0
+          this.imageSlectedList.splice(index, 1)
+        }
+      })
+    },
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
     }
   }
 }
