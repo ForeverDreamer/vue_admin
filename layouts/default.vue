@@ -71,6 +71,16 @@ export default {
                 url: '/home/photo',
                 icon: 'el-icon-s-operation',
                 name: '相册管理'
+              },
+              {
+                url: '/home/product',
+                icon: 'el-icon-s-home',
+                name: '商品列表'
+              },
+              {
+                url: '/home/sku',
+                icon: 'el-icon-s-operation',
+                name: '商品规格'
               }
             ]
           },

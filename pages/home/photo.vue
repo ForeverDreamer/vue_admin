@@ -146,6 +146,8 @@
           </el-button>
         </el-button-group>
       </div>
+      <!-- Three values: flex-grow | flex-shrink | flex-basis -->
+      <!-- flex: 2 2 10%; -->
       <div class="flex-grow-1 px-2">
         <el-pagination
           :current-page="currentPage"
