@@ -9,8 +9,9 @@ export default {
   name: 'Sku',
   created () {
     const Strophe = this.$strophe.Strophe
-    const conn = new Strophe.Connection('http://example.com:5443/bosh')
-    conn.connect('admin@example.com', 'password', this.callback)
+    console.log(this.$ejabberdInfo)
+    const conn = new Strophe.Connection('http://' + this.$ejabberdInfo.domain + ':' + this.$ejabberdInfo.port + '/bosh')
+    conn.connect(this.$ejabberdInfo.jid, this.$ejabberdInfo.password, this.callback)
     console.log(Strophe)
   },
   methods: {
