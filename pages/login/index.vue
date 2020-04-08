@@ -33,7 +33,8 @@
 export default {
   name: 'Index',
   beforeCreate () {
-    if (this.$store.getters.isAuthenticated) {
+    if (this.$store.getters['auth/isAuthenticated']) {
+      console.log('login -> beforeCreate')
       this.$router.push('/home')
     }
   },
@@ -61,7 +62,7 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.$store.dispatch(
-            'authenticateUser',
+            'auth/authenticateUser',
             {
               username: this.form.userName,
               password: this.form.password
