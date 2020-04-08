@@ -1,6 +1,6 @@
 <template>
   <el-container class="el-container__outer">
-    <el-header class="d-flex align-items-center border-bottom">
+    <el-header class="d-flex align-items-center">
       <div class="d-flex align-items-center mr-auto">
         <el-select v-model="searchInfo.orderBy" placeholder="排序方式" size="medium" class="mr-2">
           <el-option
@@ -31,7 +31,7 @@
       </el-button>
     </el-header>
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="200px" class="ml-3">
         <ul class="list-group list-group-flush">
           <album-item
             v-for="(item, index) in albums"
@@ -45,7 +45,7 @@
           />
         </ul>
       </el-aside>
-      <el-main>
+      <el-main class="el-main__inner">
         <el-row :gutter="10">
           <el-col
             v-for="(item, index) in imageList"
@@ -135,8 +135,8 @@
         </el-upload>
       </div>
     </el-dialog>
-    <el-footer class="border-top d-flex align-items-center px-0">
-      <div style="width: 200px" class="h-100 d-flex align-items-center justify-content-center flex-shrink-0 border-right">
+    <el-footer class="border-top ml-3 d-flex align-items-center px-0">
+      <div style="width: 183px" class="h-100 d-flex align-items-center justify-content-center flex-shrink-0 border-right">
         <el-button-group>
           <el-button icon="el-icon-arrow-left" size="mini">
             上一页
@@ -436,7 +436,7 @@ export default {
     /*line-height: 200px;*/
   }
 
-  .el-main {
+  .el-main__inner {
     position: absolute;
     top: 60px;
     left: 200px;

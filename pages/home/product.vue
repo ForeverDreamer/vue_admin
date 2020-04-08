@@ -5,7 +5,9 @@
       <el-tab-pane v-for="(item, index) in tabs" :key="index" :label="item.name">
         <button-search ref="buttonSearch" placeholder="要搜索的商品名称" @search="search">
           <template v-slot:left>
-            <el-button type="success" size="mini">发布商品</el-button>
+            <nuxt-link to="/product/release">
+              <el-button type="success" size="mini">发布商品</el-button>
+            </nuxt-link>
             <el-button type="warning" size="mini">恢复商品</el-button>
             <el-button type="danger" size="mini">批量删除</el-button>
             <el-button size="mini">上架</el-button>

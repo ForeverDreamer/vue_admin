@@ -9,6 +9,12 @@
         text-color="#fff"
         active-text-color="#ffd04b"
         @select="headerSelect">
+<!--        <nuxt-link v-for="(item, index) in headerNavMenu.categories" :key="index" :to="item.url">-->
+<!--          <el-menu-item :index="index|numToString">-->
+<!--            &lt;!&ndash;<nuxt-link :to="item.url">{{ item.name }}</nuxt-link>&ndash;&gt;-->
+<!--            {{ item.name }}-->
+<!--          </el-menu-item>-->
+<!--        </nuxt-link>-->
         <el-menu-item :index="index|numToString" v-for="(item, index) in headerNavMenu.categories" :key="index">
           <!--<nuxt-link :to="item.url">{{ item.name }}</nuxt-link>-->
           {{ item.name }}
@@ -34,8 +40,14 @@
         </el-menu>
       </el-aside>
       <el-main class="bg-light">
-        <nuxt />
-
+        <el-container direction="vertical">
+          <el-breadcrumb class="border-bottom pb-2 m-1 mb-3" separator="/">
+            <el-breadcrumb-item v-for="(item, index) in breadArray" :key="index" :to="{ path: item.path }">
+              {{ item.name }}
+            </el-breadcrumb-item>
+          </el-breadcrumb>
+          <nuxt />
+        </el-container>
         <el-backtop target=".el-main" :bottom="40">
           <div class="backtop">顶</div>
         </el-backtop>
@@ -149,7 +161,21 @@ export default {
           name: 'doer',
           headImg: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
         }
-      }
+      },
+      breadArray: [
+        {
+          name: '后台首页',
+          path: ''
+        },
+        {
+          name: '用户管理',
+          path: ''
+        },
+        {
+          name: '相册管理',
+          path: ''
+        }
+      ]
     }
   },
   computed: {
