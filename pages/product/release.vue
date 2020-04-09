@@ -21,31 +21,12 @@
         <!--多规格-->
         <template v-else>
           <el-form ref="skuForm" label-width="80px">
-            <el-form-item label="添加规格">
-              <div class="card">
-                <div class="card-header d-flex align-items-center">
-                  规格项：
-                  <el-input size="mini" style="width: 200px">
-                    <!--<template slot="prepend">规格项：</template>-->
-                    <el-button slot="append" icon="el-icon-more"></el-button>
-                  </el-input>
-                  <el-radio-group size="mini" class="ml-5 mb-n2 mr-auto">
-                    <el-radio label="无" border></el-radio>
-                    <el-radio label="颜色" border></el-radio>
-                    <el-radio label="图片" border></el-radio>
-                  </el-radio-group>
-                  <el-button size="mini" icon="el-icon-top"></el-button>
-                  <el-button size="mini" icon="el-icon-bottom"></el-button>
-                  <el-button size="mini" type="text">删除</el-button>
-                </div>
-                <div class="card-body">
-                  <el-button type="text" size="mini" icon="el-icon-plus">
-                    增加规格值
-                  </el-button>
-                </div>
-              </div>
-              <el-button type="success" size="mini" class="mt-3">添加规格</el-button>
-            </el-form-item>
+            <el-form label-width="80px">
+              <el-form-item label="添加规格">
+                <sku-card v-for="(item, index) in skuCard" :key="index" :item="item" :index="index" :total="skuCardTotal"></sku-card>
+                <el-button type="success" size="mini" @click="addSkuCard">添加规格</el-button>
+              </el-form-item>
+            </el-form>
             <el-form-item label="批量设置">
               <el-button type="text">销售价</el-button>
               <el-button type="text">市场价</el-button>
@@ -80,15 +61,24 @@
 import { mapState, mapMutations } from 'vuex'
 import basicSetup from '@/components/product/release/basic-setup'
 import singleAttr from '@/components/product/release/single-attr'
+import skuCard from '@/components/product/release/sku-card'
 
 export default {
   name: 'Release',
-  components: { basicSetup, singleAttr },
+  components: {
+    basicSetup,
+    singleAttr,
+    skuCard
+  },
   computed: {
     ...mapState({
       // 商品规格
-      skuType: state => state['release-product'].skuType
-    })
+      skuType: state => state['release-product'].skuType,
+      skuCard: state => state['release-product'].skuCard
+    }),
+    skuCardTotal () {
+      return this.skuCard.length
+    }
   },
   mounted () {},
   data () {
@@ -98,7 +88,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      changeState: 'release-product/changeState'
+      changeState: 'release-product/changeState',
+      addSkuCard: 'release-product/addSkuCard'
     }),
     vModel (key, value) {
       this.changeState({ key, value })
