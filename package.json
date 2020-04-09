@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "awe-dnd": "^0.3.4",
     "bootstrap-vue": "^2.7.0",
     "echarts": "^4.7.0",
     "element-ui": "^2.4.11",
