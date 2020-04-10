@@ -36,7 +36,7 @@
               <el-button type="text">重量</el-button>
             </el-form-item>
             <el-form-item label="规格设置">
-              规格设置
+              <sku-table></sku-table>
             </el-form-item>
           </el-form>
         </template>
@@ -62,13 +62,20 @@ import { mapState, mapMutations } from 'vuex'
 import basicSetup from '@/components/product/release/basic-setup'
 import singleAttr from '@/components/product/release/single-attr'
 import skuCard from '@/components/product/release/sku-card'
+import skuTable from '@/components/product/release/sku-table'
 
 export default {
   name: 'Release',
   components: {
     basicSetup,
     singleAttr,
-    skuCard
+    skuCard,
+    skuTable
+  },
+  data () {
+    return {
+      activeTabIndex: 0
+    }
   },
   computed: {
     ...mapState({
@@ -81,11 +88,6 @@ export default {
     }
   },
   mounted () {},
-  data () {
-    return {
-      activeTabIndex: 0
-    }
-  },
   methods: {
     ...mapMutations({
       changeState: 'release-product/changeState',
@@ -95,7 +97,7 @@ export default {
       this.changeState({ key, value })
     },
     handleClick (tab, event) {
-      console.log(this.activeTabIndex)
+      // console.log(this.activeTabIndex)
     }
   }
 }

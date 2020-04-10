@@ -35,8 +35,9 @@
           :indexAttr="indexAttr"
           :indexCard="index"
           :type="item.type"
-          v-dragging="{ item: itemChild, list: syncAttrs, group: syncSkuCardName }"/>
-          <!--group好像一次绑定后就无法修改，暂时不管，反正现在也没什么用-->
+          v-dragging="{ item: itemChild, list: syncAttrs, group: index }"/>
+          <!--group好像一次绑定后就无法修改，暂时不管，反正现在也没什么用，或者在创建时addSkuCard传递group参数过去，
+          item也是不知道做什么用的，用到是再去研究解决方案，实在不行就google搜一下有没有其它好用的插件库-->
       </div>
       <!--增加规格属性-->
       <el-button type="text" size="mini" icon="el-icon-plus" @click="addSkuAttr(index)">
