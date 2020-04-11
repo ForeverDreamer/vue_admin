@@ -46,6 +46,11 @@
               {{ item.name }}
             </el-breadcrumb-item>
           </el-breadcrumb>
+          <image-choose-dialog
+            :image-dialog-visible="imageDialogVisible"
+            @imageDialogHide="imageDialogVisible = false"
+            @chooseImageconfirm="chooseImageconfirm">
+          </image-choose-dialog>
           <nuxt />
         </el-container>
         <el-backtop target=".el-main" :bottom="40">
@@ -59,13 +64,24 @@
 <script>
 // import config from '@/utils/mixins/config'
 // import common from '@/utils/mixins/common'
+import imageChooseDialog from '@/components/common/image-choose-dialog'
 
 export default {
+  components: {
+    imageChooseDialog
+  },
+  provide () {
+    return {
+      app: this
+    }
+  },
   // mixins: [config, common],
   middleware: ['init-auth', 'auth', 'log'],
   // mixins: [common],
   data () {
     return {
+      imageDialogVisible: false,
+      confirmCallback: null,
       headerNavMenu: {
         activeIndex: '0',
         categories: [
@@ -205,9 +221,14 @@ export default {
     asideSelect (key, keyPath) {
       this.asideActiveIndex = key
       this.$router.push(this.asideMenu[key].url)
+    },
+    chooseImage (confirmCallback) {
+      this.confirmCallback = confirmCallback
+      this.imageDialogVisible = true
+    },
+    chooseImageconfirm (imageSlectedList) {
+      console.log(imageSlectedList)
     }
-  },
-  created () {
   }
 }
 </script>
@@ -231,6 +252,10 @@ export default {
   *:after {
     box-sizing: border-box;
     margin: 0;
+  }
+
+  .el-dialog__body {
+    padding: 0;
   }
 
   .backtop {

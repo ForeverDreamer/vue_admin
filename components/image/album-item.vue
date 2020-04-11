@@ -2,10 +2,12 @@
   <li
     class="list-group-item list-group-item-action d-flex align-items-center"
     :class="{'active doer-active': active}"
-    @click.stop="$emit('change', index)"
-  >
+    @click.stop="$emit('change', index)">
     {{ item.name }}
-    <el-dropdown class="ml-auto">
+    <span v-if="!showOptions" class="btn btn-light btn-sm border ml-auto">
+      {{ item.num }}
+    </span>
+    <el-dropdown v-else class="ml-auto">
       <span class="btn btn-light btn-sm border">
         {{ item.num }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
@@ -26,6 +28,10 @@ export default {
     active: {
       type: Boolean,
       default: false
+    },
+    showOptions: {
+      type: Boolean,
+      default: true
     }
   }
   // methods: {

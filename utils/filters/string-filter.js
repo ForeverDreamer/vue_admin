@@ -1,4 +1,4 @@
 export const numToString = (value) => {
-  console.log('numToString')
+  // console.log('numToString')
   return value.toString()
 }

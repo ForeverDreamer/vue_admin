@@ -98,7 +98,7 @@ export const mutations = {
     // }
     state.ths[0].rowspan = skuTotal > 0 ? 1 : 2
     // console.log(this)
-    console.log('syncTableThs', JSON.stringify(state.ths[0]))
+    // console.log('syncTableThs', JSON.stringify(state.ths[0]))
   },
   syncTableSkusArray (state) {
     if (state.skuCard.length === 0) {
@@ -113,9 +113,9 @@ export const mutations = {
     if (skus.length === 0) {
       return []
     }
-    console.log('skus', JSON.stringify(skus))
+    // console.log('skus', JSON.stringify(skus))
     state.tableSkusArray = $helper.cartesianProductOf(...skus)
-    console.log('tableSkusArray', JSON.stringify(state.tableSkusArray))
+    // console.log('tableSkusArray', JSON.stringify(state.tableSkusArray))
   },
   // 初始化表数据
   initTableData (state) {
@@ -163,7 +163,7 @@ export const mutations = {
   },
   changeState (state, { key, value }) {
     state[key] = value
-    console.log(key, value)
+    // console.log(key, value)
   },
   addSkuCard (state) {
     state.skuCard.push({
@@ -183,7 +183,7 @@ export const mutations = {
   },
   vModelSkuCard (state, { index, key, value }) {
     state.skuCard[index][key] = value
-    console.log(index, key, value)
+    // console.log(index, key, value)
   },
   sortSkuCard (state, { action, index }) {
     $helper[action](state.skuCard, index)

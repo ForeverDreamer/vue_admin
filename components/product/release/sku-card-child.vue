@@ -4,7 +4,7 @@
       <!--颜色选择器-->
       <el-color-picker :value="item.color" v-if="type === 1" size="mini" class="mr-2"></el-color-picker>
       <!--图片选择-->
-      <span v-else class="btn btn-light border p-1 mr-2" style="line-height: 1;">
+      <span v-else class="btn btn-light border p-1 mr-2" style="line-height: 1;" @click="chooseImage">
         <i class="el-icon-plus"></i>
       </span>
     </div>
@@ -23,6 +23,7 @@ import { mapMutations } from 'vuex'
 
 export default {
   name: 'SkuCardChild',
+  inject: ['app'],
   props: {
     item: Object,
     indexAttr: Number,
@@ -47,6 +48,12 @@ export default {
     },
     updateName (value) {
       this.vModel('name', value)
+    },
+    chooseImage () {
+      // console.log(this.app)
+      this.app.chooseImage((res) => {
+        console.log(res)
+      })
     }
   }
 }

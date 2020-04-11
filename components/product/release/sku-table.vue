@@ -78,6 +78,11 @@ export default {
       validCards: 'release-product/validCards'
     })
   },
+  created () {
+    this.syncTableThs()
+    this.initTableData()
+    // console.log('tableData', JSON.stringify(this.tableData))
+  },
   methods: {
     ...mapMutations({
       syncTableThs: 'release-product/syncTableThs',
@@ -87,12 +92,7 @@ export default {
     vModel (index, key, value) {
       this.vModelTableData({ index, key, value })
     }
-  },
-  created () {
-    this.syncTableThs()
-    this.initTableData()
-    // console.log('tableData', JSON.stringify(this.tableData))
-  },
+  }
 }
 </script>
 
