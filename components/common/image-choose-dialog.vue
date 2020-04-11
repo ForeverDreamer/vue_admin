@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="提示"
+    title="图片管理"
     :visible.sync="imageDialogVisible"
     width="80%"
     top="6vh">
@@ -118,13 +118,20 @@ export default {
     albumItem
   },
   props: {
-    imageDialogVisible: {
-      type: Boolean,
-      default: false
+    // imageDialogVisible: {
+    //   type: Boolean,
+    //   default: false
+    // }
+    // 选中图片最大数量限制
+    selectMax: {
+      type: Number,
+      default: 9
     }
   },
   data () {
     return {
+      imageDialogVisible: false,
+      confirmCallback: null,
       // url封面图必须再srcList中，否则第一张图片显示不出来，且第一张预览图默认时封面缩略图
       imageList: [],
       imageSlectedList: [],
@@ -303,6 +310,12 @@ export default {
         item.selectOrder = 0
       } else {
         // 选中
+        if (this.imageSlectedList.length >= this.selectMax) {
+          return this.$message({
+            message: '最多选择' + this.selectMax + '张图片',
+            type: 'warning'
+          })
+        }
         this.imageSlectedList.push({ id: item.id, url: item.url })
         item.selectOrder = this.imageSlectedList.length
         item.selected = true
@@ -324,17 +337,25 @@ export default {
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
     },
+    chooseImage (confirmCallback) {
+      this.confirmCallback = confirmCallback
+      // this.imageDialogVisible = true
+    },
     imageDialogHide () {
-      this.$emit('imageDialogHide')
+      // this.$emit('imageDialogHide')
+      this.imageDialogVisible = false
       for (const image of this.imageList) {
         image.selected = false
         image.selectOrder = 0
       }
       this.imageSlectedList.length = 0
-      // this.confirmCallback = null
+      this.confirmCallback = null
     },
     imageDialogConfirm () {
-      this.$emit('chooseImageconfirm', this.imageSlectedList)
+      if (this.imageSlectedList.length > 0) {
+        this.confirmCallback(this.imageSlectedList)
+        // this.$emit('chooseImageconfirm', this.imageSlectedList)
+      }
       this.imageDialogHide()
     }
   }

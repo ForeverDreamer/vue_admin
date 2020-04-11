@@ -201,14 +201,14 @@ export const mutations = {
     console.log('addSkuAttr', JSON.stringify(state.skuCard[index].attrs))
   },
   delSkuAttr (state, { indexCard, indexAttr }) {
-    console.log(indexCard, indexAttr)
+    // console.log(indexCard, indexAttr)
     state.skuCard[indexCard].attrs.splice(indexAttr, 1)
     this.commit('release-product/syncTableThs')
     const payload = {}
     this.commit('release-product/initTableData', payload)
   },
   updateSkuAttr (state, { indexCard, indexAttr, key, value }) {
-    console.log(indexCard, indexAttr, key, value)
+    // console.log(indexCard, indexAttr, key, value)
     state.skuCard[indexCard].attrs[indexAttr][key] = value
   },
   sortSkuAttr (state, { indexCard, attrs }) {
@@ -225,8 +225,9 @@ export const mutations = {
     // console.log(JSON.stringify(state.skuCard[indexCard].attrs))
   },
   vModelTableData (state, { index, key, value }) {
-    state.tableData[index][key] = value
+    console.log('vModelTableData', state.tableData)
     console.log(index, key, value)
+    state.tableData[index][key] = value
   }
 }
 

@@ -48,7 +48,7 @@
         媒体设置
       </el-tab-pane>
       <el-tab-pane label="商品详情">
-        商品详情
+        <tinymce v-model="editorMsg" ref="editor" @onClick="onClick"></tinymce>
       </el-tab-pane>
       <el-tab-pane label="折扣设置">
         折扣设置
@@ -63,6 +63,7 @@ import basicSetup from '@/components/product/release/basic-setup'
 import singleAttr from '@/components/product/release/single-attr'
 import skuCard from '@/components/product/release/sku-card'
 import skuTable from '@/components/product/release/sku-table'
+import tinymce from '@/components/common/tinymce'
 
 export default {
   name: 'Release',
@@ -70,11 +71,13 @@ export default {
     basicSetup,
     singleAttr,
     skuCard,
-    skuTable
+    skuTable,
+    tinymce
   },
   data () {
     return {
-      activeTabIndex: 0
+      activeTabIndex: 0,
+      editorMsg: 'Welcome to Use Tinymce Editor'
     }
   },
   computed: {
@@ -98,6 +101,11 @@ export default {
     },
     handleClick (tab, event) {
       // console.log(this.activeTabIndex)
+    },
+    onClick (e, editor) {
+      console.log('Element clicked')
+      console.log(e)
+      console.log(editor)
     }
   }
 }

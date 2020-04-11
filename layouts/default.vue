@@ -46,11 +46,7 @@
               {{ item.name }}
             </el-breadcrumb-item>
           </el-breadcrumb>
-          <image-choose-dialog
-            :image-dialog-visible="imageDialogVisible"
-            @imageDialogHide="imageDialogVisible = false"
-            @chooseImageconfirm="chooseImageconfirm">
-          </image-choose-dialog>
+          <image-choose-dialog ref="imageChooseDialog" :select-max="selectMax"></image-choose-dialog>
           <nuxt />
         </el-container>
         <el-backtop target=".el-main" :bottom="40">
@@ -80,8 +76,8 @@ export default {
   // mixins: [common],
   data () {
     return {
-      imageDialogVisible: false,
-      confirmCallback: null,
+      selectMax: 0,
+      // imageDialogVisible: false,
       headerNavMenu: {
         activeIndex: '0',
         categories: [
@@ -222,13 +218,14 @@ export default {
       this.asideActiveIndex = key
       this.$router.push(this.asideMenu[key].url)
     },
-    chooseImage (confirmCallback) {
-      this.confirmCallback = confirmCallback
-      this.imageDialogVisible = true
-    },
-    chooseImageconfirm (imageSlectedList) {
-      console.log(imageSlectedList)
+    chooseImage (confirmCallback, selectMax = 1) {
+      this.selectMax = selectMax
+      this.$refs.imageChooseDialog.chooseImage(confirmCallback)
+      this.$refs.imageChooseDialog.imageDialogVisible = true
     }
+    // chooseImageconfirm (imageSlectedList) {
+    //   console.log(imageSlectedList)
+    // }
   }
 }
 </script>

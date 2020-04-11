@@ -30,9 +30,10 @@
           {{ sku.name }}
         </th>
         <td class="text-center">
-          <span class="btn btn-light border" style="line-height: 1;">
+          <span v-if="!item.image" class="btn btn-light border p-1 mr-2" style="line-height: 1;" @click="chooseImage(index)">
             <i class="el-icon-plus"></i>
           </span>
+          <el-image v-else :src="item.image" fit="cover" @click="chooseImage(index)"/>
         </td>
         <td>
           <el-input type="number" :value="item.marketPrice" @input="vModel(index, 'marketPrice', $event)"></el-input>
@@ -65,6 +66,7 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'SkuTable',
+  inject: ['app'],
   computed: {
     ...mapState({
       // token: state => state.auth.token,
@@ -91,6 +93,12 @@ export default {
     }),
     vModel (index, key, value) {
       this.vModelTableData({ index, key, value })
+    },
+    chooseImage (index) {
+      // console.log(this.app)
+      this.app.chooseImage((res) => {
+        this.vModel(index, 'image', res[0].url)
+      })
     }
   }
 }
@@ -99,5 +107,11 @@ export default {
 <style scoped>
 th {
   width: 5%;
+}
+
+.el-image {
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
 }
 </style>
