@@ -47,6 +47,7 @@
             </el-breadcrumb-item>
           </el-breadcrumb>
           <image-choose-dialog ref="imageChooseDialog" :select-max="selectMax"></image-choose-dialog>
+          <sku-dialog ref="skuDialog"></sku-dialog>
           <nuxt />
         </el-container>
         <el-backtop target=".el-main" :bottom="40">
@@ -60,11 +61,13 @@
 <script>
 // import config from '@/utils/mixins/config'
 // import common from '@/utils/mixins/common'
-import imageChooseDialog from '@/components/common/image-choose-dialog'
+import imageChooseDialog from '@/components/product/release/image-choose-dialog'
+import skuDialog from '@/components/product/release/sku-dialog'
 
 export default {
   components: {
-    imageChooseDialog
+    imageChooseDialog,
+    skuDialog
   },
   provide () {
     return {
@@ -218,14 +221,19 @@ export default {
       this.asideActiveIndex = key
       this.$router.push(this.asideMenu[key].url)
     },
+    // chooseImageconfirm (imageSlectedList) {
+    //   console.log(imageSlectedList)
+    // },
     chooseImage (confirmCallback, selectMax = 1) {
       this.selectMax = selectMax
       this.$refs.imageChooseDialog.chooseImage(confirmCallback)
       this.$refs.imageChooseDialog.imageDialogVisible = true
+    },
+    chooseSkuAttrs (confirmCallback, selectMax = 1) {
+      this.selectMax = selectMax
+      this.$refs.skuDialog.chooseSkuAttrs(confirmCallback)
+      this.$refs.skuDialog.skuDialogVisible = true
     }
-    // chooseImageconfirm (imageSlectedList) {
-    //   console.log(imageSlectedList)
-    // }
   }
 }
 </script>

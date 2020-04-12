@@ -382,7 +382,7 @@ export default {
 </script>
 
 <style scoped>
-  .doer-active {
+  .custom-active {
     color: #67C23A!important;
     background-color: #F0F9EB!important;
     border-color: #C237B0!important;

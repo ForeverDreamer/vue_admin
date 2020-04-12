@@ -1,7 +1,7 @@
 <template>
   <li
     class="list-group-item list-group-item-action d-flex align-items-center"
-    :class="{'active doer-active': active}"
+    :class="{'active custom-active': active}"
     @click.stop="$emit('change', index)">
     {{ item.name }}
     <span v-if="!showOptions" class="btn btn-light btn-sm border ml-auto">

@@ -4,7 +4,7 @@
       规格项：
       <el-input :value="item.name" size="mini" style="width: 200px" @input="vModel(index, 'name', $event)">
         <!--<template slot="prepend">规格项：</template>-->
-        <el-button slot="append" icon="el-icon-more" />
+        <el-button slot="append" icon="el-icon-more" @click="chooseSkuAttrs"></el-button>
       </el-input>
       <el-radio-group :value="item.type" size="mini" class="ml-5 mb-n2 mr-auto" @input="vModel(index, 'type', $event)">
         <el-radio :label="0" border>
@@ -53,6 +53,7 @@ import skuCardChild from '@/components/product/release/sku-card-child'
 
 export default {
   name: 'SkuCard',
+  inject: ['app'],
   components: {
     skuCardChild
   },
@@ -118,6 +119,13 @@ export default {
     },
     sortCard (action, index) {
       this.sortSkuCard({ action, index })
+    },
+    chooseSkuAttrs () {
+      // console.log(this.app)
+      this.app.chooseSkuAttrs((res) => {
+        console.log('chooseSkuAttrs', res)
+        // this.vModel('image', res[0].url)
+      })
     }
   }
 }
