@@ -61,70 +61,7 @@ export default {
       skuDialogVisible: false,
       confirmCallback: null,
       activeIndex: 0
-      // selectedList: [],
-      // selectedCards: [],
-      // skuCards: [
-      //   {
-      //     selected: false,
-      //     name: '颜色',
-      //     type: 0, // 规格类型 0无 1颜色 2图片
-      //     attrs: [
-      //       {
-      //         id: 1,
-      //         name: '红色',
-      //         image: '',
-      //         color: '',
-      //         checked: false
-      //       },
-      //       {
-      //         id: 2,
-      //         name: '绿色',
-      //         image: '',
-      //         color: '',
-      //         checked: false
-      //       },
-      //       {
-      //         id: 3,
-      //         name: '蓝色',
-      //         image: '',
-      //         color: '',
-      //         checked: false
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     selected: false,
-      //     name: '尺寸',
-      //     type: 0, // 规格类型 S小 M中 L大
-      //     attrs: [
-      //       {
-      //         id: 1,
-      //         name: 'S',
-      //         image: '',
-      //         color: '',
-      //         checked: false
-      //       },
-      //       {
-      //         id: 2,
-      //         name: 'M',
-      //         image: '',
-      //         color: '',
-      //         checked: false
-      //       },
-      //       {
-      //         id: 3,
-      //         name: 'L',
-      //         image: '',
-      //         color: '',
-      //         checked: false
-      //       }
-      //     ]
-      //   }
-      // ]
     }
-  },
-  created () {
-    this.initData()
   },
   computed: {
     ...mapState({
@@ -137,6 +74,9 @@ export default {
     allSelected () {
       return this.skuAttrs.length === this.selectedList.length
     }
+  },
+  created () {
+    this.initData()
   },
   methods: {
     ...mapMutations({

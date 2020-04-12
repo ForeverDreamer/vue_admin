@@ -18,28 +18,30 @@ export const state = () => ({
   costPrice: 0,
   weight: 0,
   volume: 0,
+  // 可选规格数据由后端服务器配置，页面初始化时请求保存到Vuex
   skuCards: [
     {
+      index: 0,
       selected: false,
       name: '颜色',
       type: 0, // 规格类型 0无 1颜色 2图片
       attrs: [
         {
-          id: 1,
+          index: 0,
           name: '红色',
           image: '',
           color: '',
           checked: false
         },
         {
-          id: 2,
+          index: 1,
           name: '绿色',
           image: '',
           color: '',
           checked: false
         },
         {
-          id: 3,
+          index: 2,
           name: '蓝色',
           image: '',
           color: '',
@@ -48,26 +50,27 @@ export const state = () => ({
       ]
     },
     {
+      index: 1,
       selected: false,
       name: '尺寸',
       type: 0, // 规格类型 S小 M中 L大
       attrs: [
         {
-          id: 1,
+          index: 0,
           name: 'S',
           image: '',
           color: '',
           checked: false
         },
         {
-          id: 2,
+          index: 1,
           name: 'M',
           image: '',
           color: '',
           checked: false
         },
         {
-          id: 3,
+          index: 2,
           name: 'L',
           image: '',
           color: '',
@@ -214,8 +217,12 @@ export const mutations = {
     this.commit('release-product/initTableData', payload)
   },
   updateSkuAttr (state, { indexCard, indexAttr, key, value }) {
-    // console.log(indexCard, indexAttr, key, value)
+    console.log(indexCard, indexAttr, key, value)
     state.skuCards[indexCard].attrs[indexAttr][key] = value
+    const checkedSkuAttrs = state.skuCards[indexCard].attrs.filter((attr) => {
+      return attr.checked === true
+    })
+    console.log(JSON.stringify(checkedSkuAttrs))
   },
   sortSkuAttr (state, { indexCard, attrs }) {
     // console.log('--------------------------')

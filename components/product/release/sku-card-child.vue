@@ -15,14 +15,14 @@
     <span
       class="btn btn-light p-0 position-absolute"
       style="line-height: 1; right: -10px; top: -10px"
-      @click="delSkuAttr({ indexCard, indexAttr })">
+      @click="delAttr('checked', false)">
       <i class="el-icon-circle-close"></i>
     </span>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'SkuCardChild',
@@ -36,9 +36,15 @@ export default {
       default: 0
     }
   },
+  computed: {
+    ...mapState({
+      // 商品规格
+      skuCards: state => state['release-product'].skuCards
+    })
+  },
   methods: {
     ...mapMutations({
-      delSkuAttr: 'release-product/delSkuAttr',
+      updateSkuCard: 'release-product/updateSkuCard',
       updateSkuAttr: 'release-product/updateSkuAttr'
     }),
     vModel (key, value) {
@@ -48,6 +54,18 @@ export default {
         key,
         value
       })
+    },
+    delAttr (key, value) {
+      this.updateSkuAttr({
+        indexCard: this.indexCard,
+        indexAttr: this.indexAttr,
+        key,
+        value
+      })
+      const selected = this.skuCards[this.indexCard].attrs.some(attr => attr.checked === true)
+      if (!selected) {
+        this.updateSkuCard({ indexCard: this.indexCard, key: 'selected', value: false })
+      }
     },
     updateName (value) {
       this.vModel('name', value)

@@ -31,11 +31,11 @@
         <sku-card-child
           v-for="(itemChild,indexAttr) in checkedSkuAttrs"
           :key="indexAttr"
+          v-dragging="{ item: itemChild, list: syncAttrs, group: index }"
           :item="itemChild"
-          :indexAttr="indexAttr"
-          :indexCard="index"
-          :type="item.type"
-          v-dragging="{ item: itemChild, list: syncAttrs, group: index }"/>
+          :index-attr="itemChild.index"
+          :index-card="item.index"
+          :type="item.type"/>
           <!--group好像一次绑定后就无法修改，暂时不管，反正现在也没什么用，或者在创建时addSkuCard传递group参数过去，
           item也是不知道做什么用的，用到是再去研究解决方案，实在不行就google搜一下有没有其它好用的插件库-->
       </div>
