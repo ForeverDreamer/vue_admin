@@ -22,9 +22,9 @@
         <template v-else>
           <el-form ref="skuForm" label-width="80px">
             <el-form label-width="80px">
-              <el-form-item label="添加规格">
-                <sku-card v-for="(item, index) in skuCard" :key="index" :item="item" :index="index" :total="skuCardTotal"></sku-card>
-                <el-button type="success" size="mini" @click="addSkuCard">添加规格</el-button>
+              <el-form-item label="规格">
+                <sku-card v-for="(item, index) in selectedCards" :key="index" :item="item" :index="index" :total="skuCardTotal"></sku-card>
+                <el-button type="success" size="mini" @click="addSkuCard">选择规格</el-button>
               </el-form-item>
             </el-form>
             <el-form-item label="批量设置">
@@ -59,20 +59,21 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import basicSetup from '@/components/product/release/basic-setup'
-import singleAttr from '@/components/product/release/single-attr'
-import skuCard from '@/components/product/release/sku-card'
-import skuTable from '@/components/product/release/sku-table'
-import tinymce from '@/components/common/tinymce'
+import BasicSetup from '@/components/product/release/basic-setup'
+import SingleAttr from '@/components/product/release/single-attr'
+import SkuCard from '@/components/product/release/sku-card'
+import SkuTable from '@/components/product/release/sku-table'
+import Tinymce from '@/components/common/tinymce'
 
 export default {
   name: 'Release',
+  inject: ['app'],
   components: {
-    basicSetup,
-    singleAttr,
-    skuCard,
-    skuTable,
-    tinymce
+    BasicSetup,
+    SingleAttr,
+    SkuCard,
+    SkuTable,
+    Tinymce
   },
   data () {
     return {
@@ -84,17 +85,20 @@ export default {
     ...mapState({
       // 商品规格
       skuType: state => state['release-product'].skuType,
-      skuCard: state => state['release-product'].skuCard
+      skuCards: state => state['release-product'].skuCards
     }),
+    selectedCards () {
+      return this.skuCards.filter((card) => { return card.selected })
+    },
     skuCardTotal () {
-      return this.skuCard.length
+      return this.skuCards.length
     }
   },
   mounted () {},
   methods: {
     ...mapMutations({
-      changeState: 'release-product/changeState',
-      addSkuCard: 'release-product/addSkuCard'
+      // addSkuCard: 'release-product/addSkuCard',
+      changeState: 'release-product/changeState'
     }),
     vModel (key, value) {
       this.changeState({ key, value })
@@ -106,6 +110,15 @@ export default {
       console.log('Element clicked')
       console.log(e)
       console.log(editor)
+    },
+    addSkuCard () {
+      // console.log(this.app)
+      this.app.chooseSkuAttrs((res) => {
+        console.log('chooseSkuAttrs', res)
+        // this.vModel(this.index, 'name', res.name)
+        // this.vModel(this.index, 'type', res.type)
+        // this.vModel(this.index, 'attrs', ...res.attrs)
+      })
     }
   }
 }

@@ -164,12 +164,12 @@
 </template>
 
 <script>
-import albumItem from '@/components/image/album-item'
+import AlbumItem from '@/components/image/album-item'
 
 export default {
   name: 'Photo',
   components: {
-    albumItem
+    AlbumItem
   },
   data () {
     return {

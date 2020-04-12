@@ -2,9 +2,10 @@
   <el-dialog
     title="商品规格"
     :visible.sync="skuDialogVisible"
-    width="80%"
+    width="50%"
+    center
     top="6vh">
-    <el-container class="position-relative" style="height: 70vh">
+    <el-container class="position-relative border" style="height: 50vh">
       <el-aside width="200px">
         <ul class="list-group list-group-flush">
           <li
@@ -12,16 +13,16 @@
             :key="index"
             :class="activeIndex === index ? 'custom-active' : ''"
             class="list-group-item list-group-item-action"
-            @click="activeIndex = index">
+            @click="changeSkuType(index)">
             {{ item.name }}
           </li>
         </ul>
       </el-aside>
-      <el-header class="el-header__inner border-top border-bottom">
-        <el-button type="primary" size="mini">
-          {{ allSelected ? '取消全选' : '全选' }}
-        </el-button>
-      </el-header>
+<!--      <el-header class="d-flex align-items-center el-header__inner border-top border-bottom">-->
+<!--        <el-button type="success" size="mini" @click="selectAll">-->
+<!--          {{ allSelected ? '取消全选' : '全选' }}-->
+<!--        </el-button>-->
+<!--      </el-header>-->
       <el-main class="el-main__inner">
         <div class="d-flex flex-wrap">
           <span
@@ -30,20 +31,22 @@
             :class="item.checked ? 'custom-active' : ''"
             class="border rounded py-1 px-2 m-2"
             style="cursor: pointer"
-            @click="selectAttrs(item)">
+            @click="selectAttrs(item, index)">
             {{ item.name }}
           </span>
         </div>
       </el-main>
     </el-container>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="hide">取 消</el-button>
-      <el-button type="primary" @click="confirm">确 定</el-button>
+      <!--<el-button @click="cancel">取 消</el-button>-->
+      <el-button type="success" @click="confirm">确 定</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'ImageChooseDialog',
   props: {
@@ -57,70 +60,77 @@ export default {
     return {
       skuDialogVisible: false,
       confirmCallback: null,
-      activeIndex: 0,
-      selectedList: [],
-      skuCards: [
-        {
-          name: '颜色',
-          type: 0, // 规格类型 0无 1颜色 2图片
-          attrs: [
-            {
-              id: 1,
-              name: '红色',
-              image: '',
-              color: '',
-              checked: false
-            },
-            {
-              id: 2,
-              name: '绿色',
-              image: '',
-              color: '',
-              checked: false
-            },
-            {
-              id: 3,
-              name: '蓝色',
-              image: '',
-              color: '',
-              checked: false
-            }
-          ]
-        },
-        {
-          name: '尺寸',
-          type: 0, // 规格类型 S小 M中 L大
-          attrs: [
-            {
-              id: 1,
-              name: 'S',
-              image: '',
-              color: '',
-              checked: false
-            },
-            {
-              id: 2,
-              name: 'M',
-              image: '',
-              color: '',
-              checked: false
-            },
-            {
-              id: 3,
-              name: 'L',
-              image: '',
-              color: '',
-              checked: false
-            }
-          ]
-        }
-      ]
+      activeIndex: 0
+      // selectedList: [],
+      // selectedCards: [],
+      // skuCards: [
+      //   {
+      //     selected: false,
+      //     name: '颜色',
+      //     type: 0, // 规格类型 0无 1颜色 2图片
+      //     attrs: [
+      //       {
+      //         id: 1,
+      //         name: '红色',
+      //         image: '',
+      //         color: '',
+      //         checked: false
+      //       },
+      //       {
+      //         id: 2,
+      //         name: '绿色',
+      //         image: '',
+      //         color: '',
+      //         checked: false
+      //       },
+      //       {
+      //         id: 3,
+      //         name: '蓝色',
+      //         image: '',
+      //         color: '',
+      //         checked: false
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     selected: false,
+      //     name: '尺寸',
+      //     type: 0, // 规格类型 S小 M中 L大
+      //     attrs: [
+      //       {
+      //         id: 1,
+      //         name: 'S',
+      //         image: '',
+      //         color: '',
+      //         checked: false
+      //       },
+      //       {
+      //         id: 2,
+      //         name: 'M',
+      //         image: '',
+      //         color: '',
+      //         checked: false
+      //       },
+      //       {
+      //         id: 3,
+      //         name: 'L',
+      //         image: '',
+      //         color: '',
+      //         checked: false
+      //       }
+      //     ]
+      //   }
+      // ]
     }
   },
   created () {
     this.initData()
   },
   computed: {
+    ...mapState({
+      // 商品规格
+      skuCards: state => state['release-product'].skuCards
+    }),
     skuAttrs () {
       return this.skuCards[this.activeIndex].attrs
     },
@@ -129,84 +139,77 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      updateSkuCard: 'release-product/updateSkuCard',
+      updateSkuAttr: 'release-product/updateSkuAttr'
+    }),
     initData () {
     },
-    selectAttrs (item) {
-      if (!item.checked) {
-        this.selectedList.push(item)
-        item.checked = true
+    changeSkuType (index) {
+      // this.cancelSelected()
+      this.activeIndex = index
+    },
+    selectAll () {
+      const attrs = this.skuCards[this.activeIndex].attrs
+      if (this.allSelected) {
+        this.cancelSelected()
       } else {
-        const index = this.selectedList.findIndex(attr => attr.id === item.id)
-        if (index === -1) { return }
-        this.selectedList.splice(index, 1)
-        item.checked = false
+        this.selectedList = attrs.map((attr) => {
+          attr.checked = true
+          return attr
+        })
       }
     },
-    imgSelected (item) {
-      // 取消选中
-      if (item.selected) {
-        const index = this.imageSlectedList.findIndex(v => v.id === item.id)
-        if (index === -1) {
-          return
-        }
-        // 如果取消选中非最后一个，重新计算选中序号
-        const len = this.imageSlectedList.length
-        if (index + 1 < len) {
-          for (let j = index; j < len; j++) {
-            const i = this.imageList.findIndex(v => v.id === this.imageSlectedList[j].id)
-            if (i > -1) {
-              this.imageList[i].selectOrder--
-            }
-          }
-        }
-        this.imageSlectedList.splice(index, 1)
-        item.selected = false
-        item.selectOrder = 0
+    selectAttrs (item, index) {
+      if (!item.checked) {
+        // this.selectedList.push(item)
+        this.updateSkuCard({ indexCard: this.activeIndex, key: 'selected', value: true })
+        this.updateSkuAttr({ indexCard: this.activeIndex, indexAttr: index, key: 'checked', value: true })
       } else {
-        // 选中
-        if (this.imageSlectedList.length >= this.selectMax) {
-          return this.$message({
-            message: '最多选择' + this.selectMax + '张图片',
-            type: 'warning'
-          })
+        // const index = this.selectedList.findIndex(attr => attr.id === item.id)
+        // if (index === -1) { return }
+        // this.selectedList.splice(index, 1)
+        this.updateSkuAttr({ indexCard: this.activeIndex, indexAttr: index, key: 'checked', value: false })
+        const selected = this.skuAttrs.some(attr => attr.checked === true)
+        if (!selected) {
+          this.updateSkuCard({ indexCard: this.activeIndex, key: 'selected', value: false })
         }
-        this.imageSlectedList.push({
-          id: item.id,
-          url: item.url
-        })
-        item.selectOrder = this.imageSlectedList.length
-        item.selected = true
       }
     },
     cancelSelected () {
-      this.imageList.forEach((imageOuter) => {
-        const index = this.imageSlectedList.findIndex(imageInner => imageInner.id === imageOuter.id)
-        if (index > -1) {
-          imageOuter.selected = false
-          imageOuter.selectOrder = 0
-          this.imageSlectedList.splice(index, 1)
-        }
+      const attrs = this.skuCards[this.activeIndex].attrs
+      attrs.forEach((attr) => {
+        attr.checked = false
       })
+      this.selectedList = []
+      // 不要用这种方式清空数组，这样做不能触发computed属性
+      // this.selectedList.length = 0
     },
-    chooseSkuAttrs (confirmCallback) {
+    chooseSkuAttrs (confirmCallback, index) {
       this.confirmCallback = confirmCallback
+      this.activeIndex = index
+      this.skuDialogVisible = true
       // this.imageDialogVisible = true
     },
     hide () {
-      // this.$emit('imageDialogHide')
       this.skuDialogVisible = false
-      for (const image of this.imageList) {
-        image.selected = false
-        image.selectOrder = 0
-      }
-      this.selectedList.length = 0
-      this.confirmCallback = null
+      // this.confirmCallback = null
+      // this.activeIndex = 0
+    },
+    cancel () {
+      // this.cancelSelected()
+      this.hide()
     },
     confirm () {
-      if (this.selectedList.length > 0) {
-        this.confirmCallback(this.selectedList)
-      }
-      this.imageDialogHide()
+      // const skuCard = this.skuCards[this.activeIndex]
+      // if (this.selectedList.length > 0) {
+      //   this.confirmCallback({
+      //     name: skuCard.name,
+      //     type: skuCard.type,
+      //     attrs: this.selectedList
+      //   })
+      // }
+      this.hide()
     }
   }
 }
@@ -278,7 +281,7 @@ export default {
 
   .el-main__inner {
     position: absolute;
-    top: 60px;
+    top: 0;
     left: 200px;
     bottom: 0;
     right: 0;

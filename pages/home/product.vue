@@ -143,12 +143,12 @@
 </template>
 
 <script>
-import buttonSearch from '@/components/common/button-search'
+import ButtonSearch from '@/components/common/button-search'
 
 export default {
   name: 'Product',
   components: {
-    buttonSearch
+    ButtonSearch
   },
   data () {
     return {

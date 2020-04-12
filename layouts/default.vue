@@ -61,13 +61,13 @@
 <script>
 // import config from '@/utils/mixins/config'
 // import common from '@/utils/mixins/common'
-import imageChooseDialog from '@/components/product/release/image-choose-dialog'
-import skuDialog from '@/components/product/release/sku-dialog'
+import ImageChooseDialog from '@/components/product/release/image-choose-dialog'
+import SkuDialog from '@/components/product/release/sku-dialog'
 
 export default {
   components: {
-    imageChooseDialog,
-    skuDialog
+    ImageChooseDialog,
+    SkuDialog
   },
   provide () {
     return {
@@ -229,10 +229,10 @@ export default {
       this.$refs.imageChooseDialog.chooseImage(confirmCallback)
       this.$refs.imageChooseDialog.imageDialogVisible = true
     },
-    chooseSkuAttrs (confirmCallback, selectMax = 1) {
-      this.selectMax = selectMax
-      this.$refs.skuDialog.chooseSkuAttrs(confirmCallback)
-      this.$refs.skuDialog.skuDialogVisible = true
+    chooseSkuAttrs (confirmCallback, index = 0) {
+      // this.selectMax = selectMax
+      this.$refs.skuDialog.chooseSkuAttrs(confirmCallback, index)
+      // this.$refs.skuDialog.skuDialogVisible = true
     }
   }
 }

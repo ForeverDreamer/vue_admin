@@ -110,12 +110,12 @@
 </template>
 
 <script>
-import albumItem from '@/components/image/album-item'
+import AlbumItem from '@/components/image/album-item'
 
 export default {
   name: 'ImageChooseDialog',
   components: {
-    albumItem
+    AlbumItem
   },
   props: {
     // imageDialogVisible: {

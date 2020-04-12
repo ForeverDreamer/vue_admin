@@ -70,7 +70,7 @@ export default {
   computed: {
     ...mapState({
       // token: state => state.auth.token,
-      skuCard: state => state['release-product'].skuCard,
+      skuCards: state => state['release-product'].skuCards,
       ths: state => state['release-product'].ths,
       tableData: state => state['release-product'].tableData
     }),

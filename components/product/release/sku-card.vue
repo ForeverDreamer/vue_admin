@@ -4,7 +4,7 @@
       规格项：
       <el-input :value="item.name" size="mini" style="width: 200px" @input="vModel(index, 'name', $event)">
         <!--<template slot="prepend">规格项：</template>-->
-        <el-button slot="append" icon="el-icon-more" @click="chooseSkuAttrs"></el-button>
+        <!--<el-button slot="append" icon="el-icon-more" @click="chooseSkuAttrs"></el-button>-->
       </el-input>
       <el-radio-group :value="item.type" size="mini" class="ml-5 mb-n2 mr-auto" @input="vModel(index, 'type', $event)">
         <el-radio :label="0" border>
@@ -29,7 +29,7 @@
       <!--规格属性列表-->
       <div class="d-flex align-items-center flex-wrap mb-2">
         <sku-card-child
-          v-for="(itemChild,indexAttr) in item.attrs"
+          v-for="(itemChild,indexAttr) in checkedSkuAttrs"
           :key="indexAttr"
           :item="itemChild"
           :indexAttr="indexAttr"
@@ -40,8 +40,8 @@
           item也是不知道做什么用的，用到是再去研究解决方案，实在不行就google搜一下有没有其它好用的插件库-->
       </div>
       <!--增加规格属性-->
-      <el-button type="text" size="mini" icon="el-icon-plus" @click="addSkuAttr(index)">
-        增加规格值
+      <el-button type="text" size="mini" icon="el-icon-plus" @click="chooseSkuAttrs(index)">
+        选择规格属性
       </el-button>
     </div>
   </div>
@@ -49,33 +49,18 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import skuCardChild from '@/components/product/release/sku-card-child'
+import SkuCardChild from '@/components/product/release/sku-card-child'
 
 export default {
   name: 'SkuCard',
   inject: ['app'],
   components: {
-    skuCardChild
+    SkuCardChild
   },
   props: {
     item: Object,
     index: Number,
     total: Number
-  },
-  mounted () {
-    this.$dragging.$on('dragged', ({ value }) => {
-      // console.log('attrs.stringify:', typeof JSON.stringify(this.item.attrs))
-      // console.log('attrs:', typeof this.attrs)
-      // console.log('item:', JSON.stringify(value.item))
-      // console.log('list:', JSON.stringify(value.list))
-      // console.log('value:', JSON.stringify(value))
-    })
-    this.$dragging.$on('dragend', (e) => {
-      this.sortSkuAttr({ indexCard: this.index, attrs: this.syncAttrs })
-      // console.log('拖拽结束')
-      // console.log(e)
-      // console.log(JSON.stringify(this.skuCard))
-    })
   },
   data () {
     return {
@@ -88,16 +73,21 @@ export default {
   computed: {
     ...mapState({
       // 商品规格
-      skuCard: state => state['release-product'].skuCard
+      skuCards: state => state['release-product'].skuCards
     }),
     syncAttrs () {
       return this.item.attrs.slice()
     },
+    checkedSkuAttrs () {
+      return this.item.attrs.filter((attr) => {
+        return attr.checked === true
+      })
+    },
     syncSkuCardName (obj) {
-      // console.log(obj.index, JSON.stringify(this.skuCard))
-      // console.log(this.skuCard[obj.index].name)
-      return this.skuCard[obj.index].name
-      // return this.$store.state['release-product'].skuCard[index].name
+      // console.log(obj.index, JSON.stringify(this.skuCards))
+      // console.log(this.skuCards[obj.index].name)
+      return this.skuCards[obj.index].name
+      // return this.$store.state['release-product'].skuCards[index].name
     }
   },
   // watch: {
@@ -105,6 +95,21 @@ export default {
   //
   //   }
   // },
+  mounted () {
+    this.$dragging.$on('dragged', ({ value }) => {
+      // console.log('attrs.stringify:', typeof JSON.stringify(this.item.attrs))
+      // console.log('attrs:', typeof this.attrs)
+      // console.log('item:', JSON.stringify(value.item))
+      // console.log('list:', JSON.stringify(value.list))
+      // console.log('value:', JSON.stringify(value))
+    })
+    this.$dragging.$on('dragend', (e) => {
+      this.sortSkuAttr({ indexCard: this.index, attrs: this.syncAttrs })
+      // console.log('拖拽结束')
+      // console.log(e)
+      // console.log(JSON.stringify(this.skuCards))
+    })
+  },
   methods: {
     ...mapMutations({
       changeState: 'release-product/changeState',
@@ -120,12 +125,14 @@ export default {
     sortCard (action, index) {
       this.sortSkuCard({ action, index })
     },
-    chooseSkuAttrs () {
+    chooseSkuAttrs (index) {
       // console.log(this.app)
       this.app.chooseSkuAttrs((res) => {
         console.log('chooseSkuAttrs', res)
-        // this.vModel('image', res[0].url)
-      })
+        // this.vModel(this.index, 'name', res.name)
+        // this.vModel(this.index, 'type', res.type)
+        // this.vModel(this.index, 'attrs', JSON.parse(JSON.stringify(res.attrs)))
+      }, index)
     }
   }
 }
