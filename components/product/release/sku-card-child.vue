@@ -11,14 +11,14 @@
         <el-image v-else :src="item.image" fit="cover" @click="chooseImage"/>
       </template>
     </div>
-    <el-input :value="item.name" size="mini"></el-input>
-<!--    <el-input :value="item.name" size="mini" placeholder="请输入内容" @input="updateName"></el-input>-->
-<!--    <span-->
-<!--      class="btn btn-light p-0 position-absolute"-->
-<!--      style="line-height: 1; right: -10px; top: -10px"-->
-<!--      @click="delAttr">-->
-<!--      <i class="el-icon-circle-close"></i>-->
-<!--    </span>-->
+    <!--<el-input :value="item.name" size="mini"></el-input>-->
+    <el-input :value="item.name" size="mini" @input="updateName"></el-input>
+    <span
+      class="btn btn-light p-0 position-absolute"
+      style="line-height: 1; right: -10px; top: -10px"
+      @click="delAttr">
+      <i class="el-icon-circle-close"></i>
+    </span>
   </div>
 </template>
 

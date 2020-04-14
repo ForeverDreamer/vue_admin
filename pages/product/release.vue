@@ -23,17 +23,31 @@
           <el-form ref="skuForm" label-width="80px">
             <el-form label-width="80px">
               <el-form-item label="规格">
-                <sku-card v-for="(item, index) in selectedCards" :key="index" :item="item" :index="index" :total="skuCardTotal"></sku-card>
+                <sku-card v-for="(card, cIndex) in selectedCards" :key="cIndex" :item="card" :index="cIndex" :total="skuCardTotal"></sku-card>
                 <el-button type="success" size="mini" @click="addSkuCard">选择规格</el-button>
               </el-form-item>
             </el-form>
-            <el-form-item label="批量设置">
-              <el-button type="text">销售价</el-button>
-              <el-button type="text">市场价</el-button>
-              <el-button type="text">成本价</el-button>
-              <el-button type="text">库存</el-button>
-              <el-button type="text">体积</el-button>
-              <el-button type="text">重量</el-button>
+            <el-form-item :label="batchSetup.label">
+              <template v-if="batchSetup.key === ''">
+                <el-button
+                  v-for="(category, index) in batchSetup.categories"
+                  :key="index"
+                  type="text"
+                  @click="batchSetupInput(category)">
+                  {{ category.name }}
+                </el-button>
+              </template>
+              <div v-else class="d-flex align-items-center">
+                <el-input
+                  v-model="batchSetup.value"
+                  type="number"
+                  size="mini"
+                  class="mr-2"
+                  style="width: 150px">
+                </el-input>
+                <el-button type="success" size="mini" @click="batchUpdate">批量修改</el-button>
+                <el-button size="mini" @click="cancelBatchUpdate">取消</el-button>
+              </div>
             </el-form-item>
             <el-form-item label="规格设置">
               <sku-table></sku-table>
@@ -45,7 +59,25 @@
         商品属性
       </el-tab-pane>
       <el-tab-pane label="媒体设置">
-        媒体设置
+        <el-form label-width="80px">
+          <el-form-item label="商品大图">
+            <div class="d-flex flex-wrap">
+              <div
+                v-for="(image, index) in slideShowImages"
+                :key="index"
+                class="d-flex justify-content-center align-items-center border rounded media-setup__icon mr-3 mb-3">
+                <img v-if="image.url" :src="image.url" style="width: 100%; height: 100%"/>
+                <i v-else class="el-icon-plus text-muted" style="font-size: 30px;"></i>
+              </div>
+              <div
+                v-if="slideShowImages.length < selectMax"
+                class="d-flex justify-content-center align-items-center border rounded media-setup__icon mr-3 mb-3"
+                @click="meadiaSetupChooseImage">
+                <i class="el-icon-plus text-muted" style="font-size: 30px;"></i>
+              </div>
+            </div>
+          </el-form-item>
+        </el-form>
       </el-tab-pane>
       <el-tab-pane label="商品详情">
         <tinymce v-model="editorMsg" ref="editor" @onClick="onClick"></tinymce>
@@ -77,15 +109,34 @@ export default {
   },
   data () {
     return {
+      // 当前标签索引
       activeTabIndex: 0,
-      editorMsg: 'Welcome to Use Tinymce Editor'
+      // 富文本编辑器
+      editorMsg: 'Welcome to Use Tinymce Editor',
+      batchSetup: {
+        // 批量设置编辑状态
+        key: '',
+        value: 0,
+        label: '批量设置',
+        // 批量设置分类
+        categories: [
+          { name: '市场价', key: 'marketPrice' },
+          { name: '销售价', key: 'salePrice' },
+          { name: '成本价', key: 'costPrice' },
+          { name: '库存', key: 'inventory' },
+          { name: '体积', key: 'volume' },
+          { name: '重量', key: 'weight' }
+        ]
+      },
+      selectMax: 9
     }
   },
   computed: {
     ...mapState({
       // 商品规格
       skuType: state => state['release-product'].skuType,
-      skuCards: state => state['release-product'].skuCards
+      skuCards: state => state['release-product'].skuCards,
+      slideShowImages: state => state['release-product'].slideShowImages
     }),
     selectedCards () {
       return this.skuCards.filter((card) => { return card.selected })
@@ -93,12 +144,18 @@ export default {
     skuCardTotal () {
       return this.skuCards.length
     }
+    // batchSetupName () {
+    //   const category = this.batchSetup.categories.find(category => category.key === this.batchSetup.key)
+    //   return category.name
+    // }
   },
   mounted () {},
   methods: {
     ...mapMutations({
       // addSkuCard: 'release-product/addSkuCard',
-      changeState: 'release-product/changeState'
+      changeState: 'release-product/changeState',
+      batchUpdateTableColumn: 'release-product/batchUpdateTableColumn',
+      addSlideShowImages: 'release-product/addSlideShowImages'
     }),
     vModel (key, value) {
       this.changeState({ key, value })
@@ -119,11 +176,42 @@ export default {
         // this.vModel(this.index, 'type', res.type)
         // this.vModel(this.index, 'attrs', ...res.attrs)
       })
+    },
+    batchSetupInput (category) {
+      this.batchSetup.key = category.key
+      this.batchSetup.label = category.name
+    },
+    cancelBatchUpdate () {
+      this.batchSetup.key = ''
+      this.batchSetup.value = 0
+      this.batchSetup.label = '批量设置'
+    },
+    batchUpdate () {
+      this.batchUpdateTableColumn({ column: this.batchSetup.key, value: this.batchSetup.value })
+      this.cancelBatchUpdate()
+    },
+    meadiaSetupChooseImage () {
+      if (this.slideShowImages.length >= this.selectMax) {
+        return
+      }
+      this.app.chooseImage((res) => {
+        if (this.slideShowImages.length + res.length >= this.selectMax) {
+          return this.$message({
+            message: '总共最多选择' + this.selectMax + '张图片',
+            type: 'warning'
+          })
+        }
+        this.addSlideShowImages(JSON.parse(JSON.stringify(res)))
+      }, 9)
     }
   }
 }
 </script>
 
 <style scoped>
-
+.media-setup__icon {
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+}
 </style>

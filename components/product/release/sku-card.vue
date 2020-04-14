@@ -17,10 +17,11 @@
           图片
         </el-radio>
       </el-radio-group>
+      <!--前端不要修改数据的顺序，会给状态数据管理带来混乱和灾难，要改通过另外的接口修改服务器数据配置-->
       <!--上移-->
-      <el-button size="mini" icon="el-icon-top" :disabled="index === 0" @click="sortCard('moveUp', index)" />
+      <!--<el-button size="mini" icon="el-icon-top" :disabled="index === 0" @click="sortCard('moveUp', index)" />-->
       <!--下移-->
-      <el-button size="mini" icon="el-icon-bottom" :disabled="total === index + 1" @click="sortCard('moveDown', index)" />
+      <!--<el-button size="mini" icon="el-icon-bottom" :disabled="total === index + 1" @click="sortCard('moveDown', index)" />-->
       <el-button size="mini" type="text" @click="delSkuCard(item.index)">
         删除
       </el-button>
@@ -31,11 +32,12 @@
         <sku-card-child
           v-for="(itemChild,indexAttr) in checkedSkuAttrs"
           :key="indexAttr"
-          v-dragging="{ item: itemChild, list: syncAttrs, group: index }"
           :item="itemChild"
           :index-attr="itemChild.index"
           :index-card="item.index"
           :type="item.type"/>
+          <!--前端不要修改数据的顺序，会给状态数据管理带来混乱和灾难，要改通过另外的接口修改服务器数据配置-->
+          <!--v-dragging="{ item: itemChild, list: syncAttrs, group: index }"-->
           <!--group好像一次绑定后就无法修改，暂时不管，反正现在也没什么用，或者在创建时addSkuCard传递group参数过去，
           item也是不知道做什么用的，用到是再去研究解决方案，实在不行就google搜一下有没有其它好用的插件库-->
       </div>

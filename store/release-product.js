@@ -46,69 +46,6 @@ export const state = () => ({
           image: '',
           color: '',
           checked: false
-        },
-        {
-          index: 3,
-          name: '颜色3',
-          image: '',
-          color: '',
-          checked: false
-        },
-        {
-          index: 4,
-          name: '颜色4',
-          image: '',
-          color: '',
-          checked: false
-        },
-        {
-          index: 5,
-          name: '颜色5',
-          image: '',
-          color: '',
-          checked: false
-        },
-        {
-          index: 6,
-          name: '颜色6',
-          image: '',
-          color: '',
-          checked: false
-        },
-        {
-          index: 7,
-          name: '颜色7',
-          image: '',
-          color: '',
-          checked: false
-        },
-        {
-          index: 8,
-          name: '颜色8',
-          image: '',
-          color: '',
-          checked: false
-        },
-        {
-          index: 9,
-          name: '颜色9',
-          image: '',
-          color: '',
-          checked: false
-        },
-        {
-          index: 10,
-          name: '颜色10',
-          image: '',
-          color: '',
-          checked: false
-        },
-        {
-          index: 11,
-          name: '颜色11',
-          image: '',
-          color: '',
-          checked: false
         }
       ]
     },
@@ -158,7 +95,10 @@ export const state = () => ({
   ],
   // table数据
   tableSkusArray: [],
-  tableData: []
+  tableData: [],
+  // 媒体设置
+  // 商品详情页轮播大图
+  slideShowImages: []
 })
 
 export const getters = {
@@ -221,6 +161,12 @@ export const mutations = {
       // console.log('obj', JSON.stringify(obj))
       return obj
     })
+  },
+  // 批量修改表数据列
+  batchUpdateTableColumn (state, { column, value }) {
+    for (const row of state.tableData) {
+      row[column] = value
+    }
   },
   // syncTableData (state, payload) {
   //   this.commit('release-product/syncTableSkusArray')
@@ -320,6 +266,9 @@ export const mutations = {
     console.log('vModelTableData', state.tableData)
     console.log(index, key, value)
     state.tableData[index][key] = value
+  },
+  addSlideShowImages (state, images) {
+    state.slideShowImages = state.slideShowImages.concat(images)
   }
 }
 
