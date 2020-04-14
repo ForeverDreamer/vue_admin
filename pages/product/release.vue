@@ -195,13 +195,14 @@ export default {
         return
       }
       this.app.chooseImage((res) => {
-        if (this.slideShowImages.length + res.length >= this.selectMax) {
+        if (this.slideShowImages.length + res.length > this.selectMax) {
           return this.$message({
             message: '总共最多选择' + this.selectMax + '张图片',
             type: 'warning'
           })
         }
-        this.addSlideShowImages(JSON.parse(JSON.stringify(res)))
+        // this.addSlideShowImages(JSON.parse(JSON.stringify(res)))
+        this.addSlideShowImages([...res])
       }, 9)
     }
   }

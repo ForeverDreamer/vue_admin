@@ -269,6 +269,7 @@ export const mutations = {
   },
   addSlideShowImages (state, images) {
     state.slideShowImages = state.slideShowImages.concat(images)
+    // state.slideShowImages = [...state.slideShowImages, ...images]
   }
 }
 
