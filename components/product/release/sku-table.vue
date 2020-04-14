@@ -93,13 +93,13 @@ export default {
     }),
     vModel (index, key, value) {
       this.vModelTableData({ index, key, value })
-    },
-    chooseImage (index) {
-      // console.log(this.app)
-      this.app.chooseImage((res) => {
-        this.vModel(index, 'image', res[0].url)
-      })
     }
+    // chooseImage (index) {
+    //   // console.log(this.app)
+    //   this.app.chooseImage((res) => {
+    //     this.vModel(index, 'image', res[0].url)
+    //   })
+    // }
   }
 }
 </script>

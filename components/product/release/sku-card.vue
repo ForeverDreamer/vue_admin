@@ -2,11 +2,11 @@
   <div class="card mb-3">
     <div class="card-header d-flex align-items-center">
       规格项：
-      <el-input :value="item.name" size="mini" style="width: 200px" @input="vModel(index, 'name', $event)">
+      <el-input :value="item.name" size="mini" style="width: 200px" @input="vModel(item.index, 'name', $event)">
         <!--<template slot="prepend">规格项：</template>-->
         <!--<el-button slot="append" icon="el-icon-more" @click="chooseSkuAttrs"></el-button>-->
       </el-input>
-      <el-radio-group :value="item.type" size="mini" class="ml-5 mb-n2 mr-auto" @input="vModel(index, 'type', $event)">
+      <el-radio-group :value="item.type" size="mini" class="ml-5 mb-n2 mr-auto" @input="vModel(item.index, 'type', $event)">
         <el-radio :label="0" border>
           无
         </el-radio>
@@ -21,7 +21,7 @@
       <el-button size="mini" icon="el-icon-top" :disabled="index === 0" @click="sortCard('moveUp', index)" />
       <!--下移-->
       <el-button size="mini" icon="el-icon-bottom" :disabled="total === index + 1" @click="sortCard('moveDown', index)" />
-      <el-button size="mini" type="text" @click="delSkuCard(index)">
+      <el-button size="mini" type="text" @click="delSkuCard(item.index)">
         删除
       </el-button>
     </div>
@@ -40,7 +40,7 @@
           item也是不知道做什么用的，用到是再去研究解决方案，实在不行就google搜一下有没有其它好用的插件库-->
       </div>
       <!--增加规格属性-->
-      <el-button type="text" size="mini" icon="el-icon-plus" @click="chooseSkuAttrs(index)">
+      <el-button type="text" size="mini" icon="el-icon-plus" @click="chooseSkuAttrs(item.index)">
         选择规格属性
       </el-button>
     </div>

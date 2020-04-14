@@ -11,16 +11,20 @@ export default {
       return ret
     }, [[]])
   },
-  swapArray (arr, index1, index2) {
+  swapArray (arr, index1, index2, type) {
+    if (type === 'card') {
+      arr[index1].index = index2
+      arr[index2].index = index1
+    }
     arr[index1] = arr.splice(index2, 1, arr[index1])[0]
     return arr
   },
   // 上移 将当前数组index索引与后面一个元素互换位置，向数组后面移动一位
   moveUp (arr, index) {
-    this.swapArray(arr, index, index - 1)
+    this.swapArray(arr, index, index - 1, 'card')
   },
   // 下移 将当前数组index索引与前面一个元素互换位置，向数组前面移动一位
   moveDown (arr, index) {
-    this.swapArray(arr, index, index + 1)
+    this.swapArray(arr, index, index + 1, 'card')
   }
 }

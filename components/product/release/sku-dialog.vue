@@ -2,7 +2,7 @@
   <el-dialog
     title="商品规格"
     :visible.sync="skuDialogVisible"
-    width="50%"
+    width="38%"
     center
     top="6vh">
     <el-container class="position-relative border" style="height: 50vh">
@@ -18,11 +18,11 @@
           </li>
         </ul>
       </el-aside>
-<!--      <el-header class="d-flex align-items-center el-header__inner border-top border-bottom">-->
-<!--        <el-button type="success" size="mini" @click="selectAll">-->
-<!--          {{ allSelected ? '取消全选' : '全选' }}-->
-<!--        </el-button>-->
-<!--      </el-header>-->
+      <!--<el-header class="d-flex align-items-center el-header__inner border-top border-bottom">-->
+      <!--  <el-button type="success" size="mini" @click="selectAll">-->
+      <!--    {{ allSelected ? '取消全选' : '全选' }}-->
+      <!--  </el-button>-->
+      <!--</el-header>-->
       <el-main class="el-main__inner">
         <div class="d-flex flex-wrap">
           <span
@@ -110,10 +110,6 @@ export default {
         // if (index === -1) { return }
         // this.selectedList.splice(index, 1)
         this.updateSkuAttr({ indexCard: this.activeIndex, indexAttr: index, key: 'checked', value: false })
-        const selected = this.skuAttrs.some(attr => attr.checked === true)
-        if (!selected) {
-          this.updateSkuCard({ indexCard: this.activeIndex, key: 'selected', value: false })
-        }
       }
     },
     cancelSelected () {
@@ -225,6 +221,7 @@ export default {
     left: 200px;
     bottom: 0;
     right: 0;
+    padding-right: 0;
   }
 
   /*body > .el-container {*/

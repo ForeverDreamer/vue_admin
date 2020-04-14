@@ -28,21 +28,84 @@ export const state = () => ({
       attrs: [
         {
           index: 0,
-          name: '红色',
+          name: '颜色0',
           image: '',
           color: '',
           checked: false
         },
         {
           index: 1,
-          name: '绿色',
+          name: '颜色1',
           image: '',
           color: '',
           checked: false
         },
         {
           index: 2,
-          name: '蓝色',
+          name: '颜色2',
+          image: '',
+          color: '',
+          checked: false
+        },
+        {
+          index: 3,
+          name: '颜色3',
+          image: '',
+          color: '',
+          checked: false
+        },
+        {
+          index: 4,
+          name: '颜色4',
+          image: '',
+          color: '',
+          checked: false
+        },
+        {
+          index: 5,
+          name: '颜色5',
+          image: '',
+          color: '',
+          checked: false
+        },
+        {
+          index: 6,
+          name: '颜色6',
+          image: '',
+          color: '',
+          checked: false
+        },
+        {
+          index: 7,
+          name: '颜色7',
+          image: '',
+          color: '',
+          checked: false
+        },
+        {
+          index: 8,
+          name: '颜色8',
+          image: '',
+          color: '',
+          checked: false
+        },
+        {
+          index: 9,
+          name: '颜色9',
+          image: '',
+          color: '',
+          checked: false
+        },
+        {
+          index: 10,
+          name: '颜色10',
+          image: '',
+          color: '',
+          checked: false
+        },
+        {
+          index: 11,
+          name: '颜色11',
           image: '',
           color: '',
           checked: false
@@ -100,7 +163,7 @@ export const state = () => ({
 
 export const getters = {
   validCards (state) {
-    return state.skuCards.filter(card => card.attrs.length > 0)
+    return state.skuCards.filter(card => card.selected)
   }
 }
 
@@ -109,35 +172,40 @@ export const mutations = {
   syncTableThs (state) {
     const skuTotal = this.getters['release-product/validCards'].length
     // const skuTotal = state.skuCards.length
-    state.ths[0].colspan = skuTotal
+    state.ths[0].colspan = skuTotal > 0 ? skuTotal : 1
     // for (const th of state.ths) {
     //
     // }
     state.ths[0].rowspan = skuTotal > 0 ? 1 : 2
     // console.log(this)
-    // console.log('syncTableThs', JSON.stringify(state.ths[0]))
+    console.log('syncTableThs', JSON.stringify(state.ths[0]))
   },
   syncTableSkusArray (state) {
     if (state.skuCards.length === 0) {
-      return []
+      state.tableSkusArray = []
+      return
     }
-    const skus = []
+    const skuAttrsArray = []
     for (const card of state.skuCards) {
       if (card.selected) {
-        skus.push(card.attrs)
+        skuAttrsArray.push(card.attrs.filter(attr => attr.checked === true))
       }
     }
-    if (skus.length === 0) {
-      return []
+    if (skuAttrsArray.length === 0) {
+      state.tableSkusArray = []
+      return
     }
-    // console.log('skus', JSON.stringify(skus))
-    state.tableSkusArray = $helper.cartesianProductOf(...skus)
-    // console.log('tableSkusArray', JSON.stringify(state.tableSkusArray))
+    // console.log('skus', JSON.stringify(tableSkusArray))
+    state.tableSkusArray = $helper.cartesianProductOf(...skuAttrsArray)
   },
   // 初始化表数据
   initTableData (state) {
     this.commit('release-product/syncTableSkusArray')
     // console.log('state.tableData', JSON.stringify(state.tableData))
+    if (state.tableSkusArray.length === 0) {
+      state.tableData = []
+      return
+    }
     state.tableData = state.tableSkusArray.map((skusArr) => {
       const obj = {
         skus: skusArr,
@@ -154,45 +222,51 @@ export const mutations = {
       return obj
     })
   },
-  syncTableData (state, payload) {
-    this.commit('release-product/syncTableSkusArray')
-    switch (payload.action) {
-      case 'delSkuCard':
-        console.log('delSkuCard')
-        if (state.skuCards.attrs) {
-          for (const attr of state.skuCards.attrs) {
-            const index = state.tableData.skus.findIndex(sku => sku.name === attr.name)
-            if (index !== -1) {
-              state.tableData.skus.splice(index, 1)
-            }
-          }
-        }
-        break
-      case 'addSkuCard':
-        console.log('addSkuCard')
-        break
-      case 'delSkuAttr':
-        console.log('delSkuAttr')
-        break
-      default:
-        break
-    }
-  },
+  // syncTableData (state, payload) {
+  //   this.commit('release-product/syncTableSkusArray')
+  //   switch (payload.action) {
+  //     case 'delSkuCard':
+  //       console.log('delSkuCard')
+  //       if (state.skuCards.attrs) {
+  //         for (const attr of state.skuCards.attrs) {
+  //           const index = state.tableData.skus.findIndex(sku => sku.name === attr.name)
+  //           if (index !== -1) {
+  //             state.tableData.skus.splice(index, 1)
+  //           }
+  //         }
+  //       }
+  //       break
+  //     case 'addSkuCard':
+  //       console.log('addSkuCard')
+  //       break
+  //     case 'delSkuAttr':
+  //       console.log('delSkuAttr')
+  //       break
+  //     default:
+  //       break
+  //   }
+  // },
   changeState (state, { key, value }) {
     state[key] = value
     // console.log(key, value)
   },
   updateSkuCard (state, { indexCard, key, value }) {
     state.skuCards[indexCard][key] = value
+    this.commit('release-product/syncTableThs')
     // this.commit('release-product/syncTableThs')
     // const payload = {}
     // this.commit('release-product/initTableData', payload)
   },
-  delSkuCard (state, index) {
-    state.skuCards.splice(index, 1)
+  delSkuCard (state, indexCard) {
+    console.log('delSkuCard')
+    state.skuCards[indexCard].selected = false
+    console.log(JSON.stringify(state.skuCards[indexCard].attrs))
+    for (const attr of state.skuCards[indexCard].attrs) {
+      console.log(JSON.stringify(attr))
+      attr.checked = false
+    }
     this.commit('release-product/syncTableThs')
-    const payload = {}
-    this.commit('release-product/initTableData', payload)
+    this.commit('release-product/initTableData')
   },
   vModelSkuCard (state, { index, key, value }) {
     state.skuCards[index][key] = value
@@ -200,29 +274,34 @@ export const mutations = {
   },
   sortSkuCard (state, { action, index }) {
     $helper[action](state.skuCards, index)
+    for (const rowData of state.tableData) {
+      $helper[action](rowData.skus, index)
+    }
   },
-  addSkuAttr (state, { index, key, value }) {
-    state.skuCards[index].attrs[key] = value
-    // console.log(this)
-    this.commit('release-product/syncTableThs')
-    const payload = {}
-    this.commit('release-product/initTableData', payload)
-    console.log('addSkuAttr', JSON.stringify(state.skuCards[index].attrs))
-  },
-  delSkuAttr (state, { indexCard, indexAttr }) {
-    // console.log(indexCard, indexAttr)
-    state.skuCards[indexCard].attrs.splice(indexAttr, 1)
-    this.commit('release-product/syncTableThs')
-    const payload = {}
-    this.commit('release-product/initTableData', payload)
-  },
+  // addSkuAttr (state, { index, key, value }) {
+  //   state.skuCards[index].attrs[key] = value
+  //   // console.log(this)
+  //   this.commit('release-product/syncTableThs')
+  //   const payload = {}
+  //   this.commit('release-product/initTableData', payload)
+  //   console.log('addSkuAttr', JSON.stringify(state.skuCards[index].attrs))
+  // },
+  // delSkuAttr (state, { indexCard, indexAttr }) {
+  //   // console.log(indexCard, indexAttr)
+  //   state.skuCards[indexCard].attrs.splice(indexAttr, 1)
+  //   this.commit('release-product/syncTableThs')
+  //   const payload = {}
+  //   this.commit('release-product/initTableData', payload)
+  // },
   updateSkuAttr (state, { indexCard, indexAttr, key, value }) {
     console.log(indexCard, indexAttr, key, value)
-    state.skuCards[indexCard].attrs[indexAttr][key] = value
-    const checkedSkuAttrs = state.skuCards[indexCard].attrs.filter((attr) => {
-      return attr.checked === true
-    })
-    console.log(JSON.stringify(checkedSkuAttrs))
+    const attrs = state.skuCards[indexCard].attrs
+    attrs[indexAttr][key] = value
+    const selected = attrs.some(attr => attr.checked === true)
+    if (!selected) {
+      this.commit('release-product/updateSkuCard', { indexCard, key: 'selected', value: false })
+    }
+    this.commit('release-product/initTableData')
   },
   sortSkuAttr (state, { indexCard, attrs }) {
     // console.log('--------------------------')

@@ -11,13 +11,14 @@
         <el-image v-else :src="item.image" fit="cover" @click="chooseImage"/>
       </template>
     </div>
-    <el-input :value="item.name" size="mini" placeholder="请输入内容" @input="updateName"></el-input>
-    <span
-      class="btn btn-light p-0 position-absolute"
-      style="line-height: 1; right: -10px; top: -10px"
-      @click="delAttr('checked', false)">
-      <i class="el-icon-circle-close"></i>
-    </span>
+    <el-input :value="item.name" size="mini"></el-input>
+<!--    <el-input :value="item.name" size="mini" placeholder="请输入内容" @input="updateName"></el-input>-->
+<!--    <span-->
+<!--      class="btn btn-light p-0 position-absolute"-->
+<!--      style="line-height: 1; right: -10px; top: -10px"-->
+<!--      @click="delAttr">-->
+<!--      <i class="el-icon-circle-close"></i>-->
+<!--    </span>-->
   </div>
 </template>
 
@@ -55,17 +56,20 @@ export default {
         value
       })
     },
-    delAttr (key, value) {
-      this.updateSkuAttr({
-        indexCard: this.indexCard,
-        indexAttr: this.indexAttr,
-        key,
-        value
-      })
-      const selected = this.skuCards[this.indexCard].attrs.some(attr => attr.checked === true)
-      if (!selected) {
-        this.updateSkuCard({ indexCard: this.indexCard, key: 'selected', value: false })
-      }
+    delAttr () {
+      // console.log(this.app)
+      this.updateSkuAttr({ indexCard: this.indexCard, indexAttr: this.indexAttr, key: 'checked', value: false })
+      // this.app.$refs.skuDialog.selectAttrs(this.item, this.indexAttr)
+      // this.updateSkuAttr({
+      //   indexCard: this.indexCard,
+      //   indexAttr: this.indexAttr,
+      //   key: 'checked',
+      //   value: false
+      // })
+      // const selected = this.skuCards[this.indexCard].attrs.some(attr => attr.checked === true)
+      // if (!selected) {
+      //   this.updateSkuCard({ indexCard: this.indexCard, key: 'selected', value: false })
+      // }
     },
     updateName (value) {
       this.vModel('name', value)
