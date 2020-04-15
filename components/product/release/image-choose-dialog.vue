@@ -163,11 +163,23 @@ export default {
           order: 0
         })
       }
-      for (let i = 0; i < 30; i++) {
+      const images = [
+        { url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586931192181&di=f8f88adf580ba0fd00a8668b5cd6b4f0&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20180403%2F3a46da8f2c38456582d14b2b3eaaaa68.jpeg' },
+        { url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586931192109&di=e3ff831e4a91164f2fe74b7b58f3c297&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20181130%2F1a75934459394f88b75ce6303595193c.jpeg' },
+        { url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586931195227&di=dbaa4ffdfe8ba5dc316e910281335654&imgtype=0&src=http%3A%2F%2Fi3.hoopchina.com.cn%2Fhupuapp%2Fbbs%2F2407757472606%2Fthread_2407757472606_20190501225615_s_94724_w_700_h_874_44589.jpg%3Fx-oss-process%3Dimage%2Fresize%2Cw_800%2Fformat%2Cjpg' },
+        { url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586931195277&di=208e821137c25e710af8e854258e9285&imgtype=0&src=http%3A%2F%2Fclub-img.kdslife.com%2Fattach%2F1k3%2Fdz%2F32%2Fpmqral-1po2.jpeg' },
+        { url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586931196151&di=e015dd8c168ed5696a46c7a7f1bfbaef&imgtype=0&src=http%3A%2F%2Fimage.uc.cn%2Fo%2Fwemedia%2Fs%2F2018%2F86e0002688e80eee57e0fb68d77a933ax640x795x47.jpeg%3B%2C4%2Cjpegx%3B3%2C700x.jpg' },
+        { url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586931196542&di=ebf27a8cdadfa6321df3f1e52ae4502d&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn%2Fw792h519%2F20180305%2Fcf1e-fxipenn3219504.png' },
+        { url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586931197439&di=4882ba9c16566ab04ac9dac7c75de387&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Fa044ad345982b2b7d604647b30adcbef77099bf1.jpg' },
+        { url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586931198040&di=ae094b1285418b08930c3da399d0b04d&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20180512%2Fdff3d587b8cb415eb52bcfe5f3ff9d8f.jpeg' },
+        { url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586931198341&di=4497c5e68915b853e6b3487e9956aabf&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn%2Fw966h599%2F20180123%2F9713-fyqwiqi9098405.png' },
+        { url: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3917638111,1851287468&fm=26&gp=0.jpg' }
+      ]
+      for (let i = 0; i < 10; i++) {
         this.imageList.push({
           id: i,
           name: '图片' + i,
-          url: 'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg',
+          url: images[i].url,
           srcList: [
             'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
             'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',

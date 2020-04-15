@@ -56,23 +56,48 @@
         </template>
       </el-tab-pane>
       <el-tab-pane label="商品属性">
-        商品属性
+        <el-form label-width="80px">
+          <el-form-item label="商品类型">
+            <el-select :value="productAttribute.type" placeholder="请选择商品类型" @change="productAttributeUpdateType">
+              <el-option label="上海" value="shanhai"></el-option>
+              <el-option label="北京" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <el-card shadow="never">
+          <div slot="header" class="clearfix">
+            <span>商品属性</span>
+          </div>
+          <el-form label-width="80px">
+            <el-form-item label="商品型号">
+              <el-input
+                :value="productAttribute.attrs.model"
+                placeholder="请输入商品型号"
+                @input="productAttributeUpdateAttr({ key: 'model', value: $event })">
+              </el-input>
+            </el-form-item>
+          </el-form>
+        </el-card>
       </el-tab-pane>
       <el-tab-pane label="媒体设置">
         <el-form label-width="80px">
           <el-form-item label="商品大图">
             <div class="d-flex flex-wrap">
               <div
-                v-for="(image, index) in slideShowImages"
+                v-for="(image, index) in carouselImages"
                 :key="index"
-                class="d-flex justify-content-center align-items-center border rounded media-setup__icon mr-3 mb-3">
+                class="d-flex justify-content-center align-items-center border rounded mr-3 mb-3 media-setup__image position-relative"
+                @click="meadiaSetupChooseImage(index)">
                 <img v-if="image.url" :src="image.url" style="width: 100%; height: 100%"/>
-                <i v-else class="el-icon-plus text-muted" style="font-size: 30px;"></i>
+<!--                <i v-else class="el-icon-plus text-muted" style="font-size: 30px;"></i>-->
+                <i
+                  class="el-icon-delete p-2 bg-dark text-white media-setup__icon--delete"
+                  @click.stop="mediaSetupDelImage(index)"></i>
               </div>
               <div
-                v-if="slideShowImages.length < selectMax"
-                class="d-flex justify-content-center align-items-center border rounded media-setup__icon mr-3 mb-3"
-                @click="meadiaSetupChooseImage">
+                v-if="carouselImages.length < selectMax"
+                class="d-flex justify-content-center align-items-center border rounded media-setup__image mr-3 mb-3"
+                @click="meadiaSetupChooseImage(-1)">
                 <i class="el-icon-plus text-muted" style="font-size: 30px;"></i>
               </div>
             </div>
@@ -136,7 +161,8 @@ export default {
       // 商品规格
       skuType: state => state['release-product'].skuType,
       skuCards: state => state['release-product'].skuCards,
-      slideShowImages: state => state['release-product'].slideShowImages
+      carouselImages: state => state['release-product'].carouselImages,
+      productAttribute: state => state['release-product'].productAttribute
     }),
     selectedCards () {
       return this.skuCards.filter((card) => { return card.selected })
@@ -155,7 +181,11 @@ export default {
       // addSkuCard: 'release-product/addSkuCard',
       changeState: 'release-product/changeState',
       batchUpdateTableColumn: 'release-product/batchUpdateTableColumn',
-      addSlideShowImages: 'release-product/addSlideShowImages'
+      addCarouselImages: 'release-product/addCarouselImages',
+      updateCarouselImage: 'release-product/updateCarouselImage',
+      delCarouselImage: 'release-product/delCarouselImage',
+      productAttributeUpdateType: 'release-product/productAttributeUpdateType',
+      productAttributeUpdateAttr: 'release-product/productAttributeUpdateAttr'
     }),
     vModel (key, value) {
       this.changeState({ key, value })
@@ -190,29 +220,66 @@ export default {
       this.batchUpdateTableColumn({ column: this.batchSetup.key, value: this.batchSetup.value })
       this.cancelBatchUpdate()
     },
-    meadiaSetupChooseImage () {
-      if (this.slideShowImages.length >= this.selectMax) {
-        return
-      }
-      this.app.chooseImage((res) => {
-        if (this.slideShowImages.length + res.length > this.selectMax) {
-          return this.$message({
-            message: '总共最多选择' + this.selectMax + '张图片',
-            type: 'warning'
-          })
+    meadiaSetupChooseImage (index) {
+      let max = 0
+      if (index === -1) {
+        if (this.carouselImages.length >= this.selectMax) {
+          return
         }
-        // this.addSlideShowImages(JSON.parse(JSON.stringify(res)))
-        this.addSlideShowImages([...res])
-      }, 9)
+        max = this.selectMax - this.carouselImages.length
+        this.app.chooseImage((res) => {
+          // this.addCarouselImages(JSON.parse(JSON.stringify(res)))
+          this.addCarouselImages([...res])
+        }, max)
+      } else {
+        max = 1
+        this.app.chooseImage((res) => {
+          this.updateCarouselImage({ index, image: [...res][0] })
+        }, max)
+      }
+    },
+    mediaSetupDelImage (index) {
+      this.$confirm('是否删除该图片', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.delCarouselImage(index)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {})
     }
+    // productAttributeChangeType (value) {
+    //   this.productAttributeUpdateType(value)
+    // },
+    // productAttributeChangeAttr ()
   }
 }
 </script>
 
 <style scoped>
-.media-setup__icon {
+.media-setup__image {
   width: 150px;
   height: 150px;
   cursor: pointer;
+}
+
+.media-setup__icon--delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both
 }
 </style>

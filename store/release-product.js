@@ -98,7 +98,17 @@ export const state = () => ({
   tableData: [],
   // 媒体设置
   // 商品详情页轮播大图
-  slideShowImages: []
+  carouselImages: [],
+  // 商品属性
+  productAttribute: {
+    // 商品类型
+    type: '',
+    // 商品属性
+    attrs: {
+      // 型号
+      model: ''
+    }
+  }
 })
 
 export const getters = {
@@ -267,9 +277,25 @@ export const mutations = {
     console.log(index, key, value)
     state.tableData[index][key] = value
   },
-  addSlideShowImages (state, images) {
-    state.slideShowImages = state.slideShowImages.concat(images)
-    // state.slideShowImages = [...state.slideShowImages, ...images]
+  addCarouselImages (state, images) {
+    state.carouselImages = state.carouselImages.concat(images)
+    // state.carouselImages = [...state.carouselImages, ...images]
+  },
+  updateCarouselImage (state, { index, image }) {
+    state.carouselImages.splice(index, 1, image)
+    // 不能这样做，界面不会自动刷新
+    // state.carouselImages[index] = image
+  },
+  delCarouselImage (state, index) {
+    state.carouselImages.splice(index, 1)
+  },
+  productAttributeUpdateType (state, value) {
+    console.log('productAttributeUpdateType', value)
+    state.productAttribute.type = value
+  },
+  productAttributeUpdateAttr (state, { key, value }) {
+    console.log('productAttributeUpdateAttr', key, value)
+    state.productAttribute.attrs[key] = value
   }
 }
 
