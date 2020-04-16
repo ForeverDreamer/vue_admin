@@ -108,7 +108,13 @@
         <tinymce v-model="editorMsg" ref="editor" @onClick="onClick"></tinymce>
       </el-tab-pane>
       <el-tab-pane label="折扣设置">
-        折扣设置
+        <el-form label-width="80px">
+          <el-form-item label="会员价">
+            <el-input :value="discount" @input="vModel('discount', $event)" class="w-25">
+              <template slot="append">%</template>
+            </el-input>
+          </el-form-item>
+        </el-form>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -162,7 +168,8 @@ export default {
       skuType: state => state['release-product'].skuType,
       skuCards: state => state['release-product'].skuCards,
       carouselImages: state => state['release-product'].carouselImages,
-      productAttribute: state => state['release-product'].productAttribute
+      productAttribute: state => state['release-product'].productAttribute,
+      discount: state => state['release-product'].discount
     }),
     selectedCards () {
       return this.skuCards.filter((card) => { return card.selected })

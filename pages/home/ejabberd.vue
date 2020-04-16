@@ -1,12 +1,12 @@
 <template>
   <div>
-    商品规格
+    即时通信Ejabberd
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Sku',
+  name: 'Ejabberd',
   created () {
     const Strophe = this.$strophe.Strophe
     console.log(this.$ejabberdInfo)

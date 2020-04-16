@@ -100,14 +100,9 @@ export default {
                 name: '相册管理'
               },
               {
-                url: '/home/product',
-                icon: 'el-icon-s-home',
-                name: '商品列表'
-              },
-              {
-                url: '/home/sku',
+                url: '/home/ejabberd',
                 icon: 'el-icon-s-operation',
-                name: '商品规格'
+                name: '即时通信Ejabberd'
               }
             ]
           },
@@ -117,12 +112,14 @@ export default {
             subActiveIndex: '0',
             submenu: [
               {
-                icon: 'el-icon-s-home',
-                name: '后台首页2'
+                url: '/product',
+                icon: 'el-icon-s-claim',
+                name: '商品列表'
               },
               {
-                icon: 'el-icon-s-operation',
-                name: '商品列表2'
+                url: '/product/category',
+                icon: 'el-icon-s-help',
+                name: '分类列表'
               }
             ]
           },
@@ -261,6 +258,11 @@ export default {
 
   .el-dialog__body {
     padding: 0;
+  }
+
+  /*全局生效样式*/
+  .el-tree-node__content {
+    padding: 20px 0;
   }
 
   .backtop {

@@ -108,7 +108,9 @@ export const state = () => ({
       // 型号
       model: ''
     }
-  }
+  },
+  // 折扣设置
+  discount: 0
 })
 
 export const getters = {
