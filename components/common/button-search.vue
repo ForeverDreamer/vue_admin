@@ -5,7 +5,7 @@
       <slot name="left"></slot>
       <!--右边-->
       <slot name="right">
-        <!--多加一层div，否则v-show在d-flex修饰下不生效，应该时v-show切换display属性和d-flex(display: flex)冲突-->
+        <!--多加一层div，否则v-show在d-flex修饰下不生效，应该是v-show切换display属性和d-flex(display: flex)冲突-->
         <div v-show="!advanceSearch" class="ml-auto">
           <div class="d-flex align-items-cneter ml-auto">
             <el-input v-model="keyword" :placeholder="placeholder" size="mini" class="mr-2" />

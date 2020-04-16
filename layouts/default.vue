@@ -120,6 +120,11 @@ export default {
                 url: '/product/category',
                 icon: 'el-icon-s-help',
                 name: '分类列表'
+              },
+              {
+                url: '/product/sku',
+                icon: 'el-icon-menu',
+                name: '商品规格'
               }
             ]
           },
