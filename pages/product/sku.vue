@@ -1,6 +1,6 @@
 <template>
   <div class="px-1">
-    <div class="d-flex align-items-cneter">
+    <div class="d-flex align-items-cneter border-top border-bottom py-2">
       <el-button type="success" size="mini" @click="addSkuDialogVisible = true">添加规格</el-button>
       <el-button type="danger" size="mini" @click="batchDelele">批量删除</el-button>
     </div>
@@ -28,9 +28,9 @@
         label="类型"
         width="120"
         align="center">
-<!--        <template>-->
-<!--          <span>{{ skuType }}</span>-->
-<!--        </template>-->
+        <template slot-scope="scope">
+          {{ scope.row.type | skuType }}
+        </template>
       </el-table-column>
       <el-table-column
         prop="options"
@@ -64,7 +64,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="添加规格" center :visible.sync="addSkuDialogVisible" width="30%">
+    <el-dialog title="添加规格" center :visible.sync="addSkuDialogVisible" width="40%">
       <el-form ref="addSkuForm" :model="addSkuForm" :rules="rules" label-width="80px">
         <el-form-item label="规格名称" prop="name">
           <el-input v-model="addSkuForm.name" size="mini" class="w-50"></el-input>
@@ -105,6 +105,23 @@
 <script>
 export default {
   name: 'Sku',
+  filters: {
+    skuType (type) {
+      let strType = ''
+      switch (type) {
+        case 0:
+          strType = '文字'
+          break
+        case 1:
+          strType = '颜色'
+          break
+        case 2:
+          strType = '类型'
+          break
+      }
+      return strType
+    }
+  },
   data () {
     return {
       addSkuDialogVisible: false,
@@ -128,12 +145,6 @@ export default {
       editIndex: -1
     }
   },
-  computed: {
-    skuType (e) {
-      console.log('skuType', e)
-      return 0
-    }
-  },
   created () {
     this.initData()
   },
@@ -143,7 +154,7 @@ export default {
         this.tableData.push({
           skuId: i,
           name: '颜色' + i,
-          type: 0,
+          type: 1,
           order: 50,
           online: true,
           // 服务端处理成字符串发过来
@@ -173,7 +184,6 @@ export default {
       this.multipleSelection = val
     },
     editSku (index, row) {
-      console.log(row)
       this.addSkuForm = {
         name: row.name,
         type: row.type,

@@ -123,8 +123,18 @@ export default {
               },
               {
                 url: '/product/sku',
-                icon: 'el-icon-menu',
+                icon: 'el-icon-s-grid',
                 name: '商品规格'
+              },
+              {
+                url: '/product/type',
+                icon: 'el-icon-menu',
+                name: '商品类型'
+              },
+              {
+                url: '/product/comment',
+                icon: 'el-icon-s-comment',
+                name: '商品评论'
               }
             ]
           },
