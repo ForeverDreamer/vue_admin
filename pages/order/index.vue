@@ -1,5 +1,5 @@
 <template>
-  <h1>订单</h1>
+  <div class="px-1">订单列表</div>
 </template>
 
 <script>

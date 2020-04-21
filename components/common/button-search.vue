@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex align-items-cneter">
+    <div class="d-flex align-items-cneter border-top border-bottom py-2 mb-3">
       <!--左边-->
       <slot name="left"></slot>
       <!--右边-->

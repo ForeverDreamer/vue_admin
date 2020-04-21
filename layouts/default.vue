@@ -144,12 +144,19 @@ export default {
             subActiveIndex: '0',
             submenu: [
               {
+                url: '/order',
                 icon: 'el-icon-s-home',
-                name: '后台首页3'
+                name: '订单列表'
               },
               {
+                url: '/order/invoice',
                 icon: 'el-icon-s-operation',
-                name: '商品列表3'
+                name: '发票管理'
+              },
+              {
+                url: '/order/service',
+                icon: 'el-icon-s-operation',
+                name: '售后服务'
               }
             ]
           },

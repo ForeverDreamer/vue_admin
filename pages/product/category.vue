@@ -1,6 +1,6 @@
 <template>
   <div class="px-1">
-    <div class="d-flex align-items-center py-2 border-bottom">
+    <div class="d-flex align-items-center border-top border-bottom py-2 mb-3">
       <el-button type="primary" size="mini" @click="createTopCategory">
         创建顶级分类
       </el-button>

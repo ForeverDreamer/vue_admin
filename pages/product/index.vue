@@ -48,7 +48,6 @@
     <el-table
       :data="tableData[activeTabIndex].products"
       border
-      class="mt-3"
       style="width: 100%"
       @selection-change="handleSelectionChange">
       <el-table-column
