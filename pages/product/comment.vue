@@ -113,7 +113,6 @@
         prop="time">
       </el-table-column>
       <el-table-column
-        prop="show"
         label="是否显示"
         width="80"
         align="center">

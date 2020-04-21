@@ -15,7 +15,7 @@
             <el-button size="mini">推荐</el-button>
           </template>
           <template v-slot:searchForm>
-            <el-form ref="searchForm" :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form ref="searchForm" :inline="true" :model="searchForm">
               <el-form-item label="商品名称" class="mb-0">
                 <el-input v-model="searchForm.name" size="mini" placeholder="商品名称" />
               </el-form-item>
@@ -42,88 +42,87 @@
             </el-form>
           </template>
         </button-search>
+        <!--商品列表-->
+        <el-table
+          :data="tableData[activeTabIndex].products"
+          border
+          style="width: 100%"
+          @selection-change="handleSelectionChange">
+          <el-table-column
+            type="selection"
+            width="40"
+            align="center">
+          </el-table-column>
+          <el-table-column
+            label="商品"
+            width="380"
+            align="center">
+            <template slot-scope="scope">
+              <b-media>
+                <template v-slot:aside>
+                  <b-img :src="scope.row.coverImage" width="60" alt="placeholder"></b-img>
+                </template>
+
+                <h6 class="mt-0">{{ scope.row.title }}</h6>
+                <p class="mb-1">分类：{{ scope.row.category }}</p>
+                <p class="mb-0">时间：{{ scope.row.createTime }}</p>
+              </b-media>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="type"
+            label="商品类型"
+            align="center">
+          </el-table-column>
+          <el-table-column
+            prop="salesVolume"
+            label="实际销量"
+            align="center">
+          </el-table-column>
+          <el-table-column
+            prop="order"
+            label="商品排序"
+            align="center">
+          </el-table-column>
+          <el-table-column
+            label="商品状态"
+            align="center">
+            <template slot-scope="scope">
+              <el-button type="success" size="mini" plain @click="scope.row.auditStatus = 1">
+                审核通过
+              </el-button>
+              <el-button type="danger" size="mini" plain class="ml-0 mt-1" @click="scope.row.auditStatus = 0">
+                审核不通过
+              </el-button>
+              <!--          <el-button :type="scope.row.active ? 'danger' : 'success'" size="mini" plain @click="changeStatus(scope.row)">-->
+              <!--            {{ scope.row.active ? '下架' : '上架' }}-->
+              <!--          </el-button>-->
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="inventory"
+            label="总库存"
+            align="center">
+          </el-table-column>
+          <el-table-column
+            prop="price"
+            label="价格(元)"
+            align="center">
+          </el-table-column>
+          <el-table-column
+            label="操作"
+            width="150"
+            align="center">
+            <template slot-scope="scope">
+              <el-button-group>
+                <el-button type="primary" size="mini" plain>修改</el-button>
+                <el-button type="danger" size="mini" plain @click="delProduct(scope.$index)">删除</el-button>
+              </el-button-group>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-tab-pane>
     </el-tabs>
-    <!--商品列表-->
-    <el-table
-      :data="tableData[activeTabIndex].products"
-      border
-      style="width: 100%"
-      @selection-change="handleSelectionChange">
-      <el-table-column
-        type="selection"
-        width="40"
-        align="center">
-      </el-table-column>
-      <el-table-column
-        label="商品"
-        width="380"
-        align="center">
-        <template slot-scope="scope">
-          <b-media>
-            <template v-slot:aside>
-              <b-img :src="scope.row.coverImage" width="60" alt="placeholder"></b-img>
-            </template>
-
-            <h6 class="mt-0">{{ scope.row.title }}</h6>
-            <p class="mb-1">分类：{{ scope.row.category }}</p>
-            <p class="mb-0">时间：{{ scope.row.createTime }}</p>
-          </b-media>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="type"
-        label="商品类型"
-        align="center">
-      </el-table-column>
-      <el-table-column
-        prop="salesVolume"
-        label="实际销量"
-        align="center">
-      </el-table-column>
-      <el-table-column
-        prop="order"
-        label="商品排序"
-        align="center">
-      </el-table-column>
-      <el-table-column
-        label="商品状态"
-        align="center">
-        <template slot-scope="scope">
-          <el-button type="success" size="mini" plain @click="scope.row.auditStatus = 1">
-            审核通过
-          </el-button>
-          <el-button type="danger" size="mini" plain class="ml-0 mt-1" @click="scope.row.auditStatus = 0">
-            审核不通过
-          </el-button>
-          <!--          <el-button :type="scope.row.active ? 'danger' : 'success'" size="mini" plain @click="changeStatus(scope.row)">-->
-          <!--            {{ scope.row.active ? '下架' : '上架' }}-->
-          <!--          </el-button>-->
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="inventory"
-        label="总库存"
-        align="center">
-      </el-table-column>
-      <el-table-column
-        prop="price"
-        label="价格(元)"
-        align="center">
-      </el-table-column>
-      <el-table-column
-        prop="auditStatus"
-        label="操作"
-        width="150"
-        align="center">
-        <template slot-scope="scope">
-          <el-button-group>
-            <el-button type="primary" size="mini" plain>修改</el-button>
-            <el-button type="danger" size="mini" plain @click="delProduct(scope.$index)">删除</el-button>
-          </el-button-group>
-        </template>
-      </el-table-column>
-    </el-table>
     <div style="height: 60px"></div>
     <el-footer class="border-top d-flex align-items-center px-0 bg-white">
       <!-- Three values: flex-grow | flex-shrink | flex-basis -->
@@ -212,10 +211,7 @@ export default {
     },
     clearAll () {
       console.log('clearAll!')
-      this.searchForm.name = ''
-      this.searchForm.code = ''
-      this.searchForm.type = ''
-      this.searchForm.category = ''
+      this.searchForm = {}
       this.$refs.buttonSearch[this.activeTabIndex].closeAdvanceSearch()
     },
     handleSelectionChange (val) {

@@ -15,7 +15,7 @@
         </div>
       </slot>
     </div>
-    <el-card v-show="advanceSearch" class="mt-3">
+    <el-card v-show="advanceSearch" class="my-3">
       <div slot="header" class="clearfix">
         <span>高级搜索</span>
         <el-button style="float: right; padding: 3px 0" type="text" @click="closeAdvanceSearch">

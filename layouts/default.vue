@@ -166,12 +166,14 @@ export default {
             subActiveIndex: '0',
             submenu: [
               {
+                url: '/member',
                 icon: 'el-icon-s-home',
-                name: '后台首页4'
+                name: '会员列表'
               },
               {
+                url: '/member/level',
                 icon: 'el-icon-s-operation',
-                name: '商品列表4'
+                name: '会员等级'
               }
             ]
           },
