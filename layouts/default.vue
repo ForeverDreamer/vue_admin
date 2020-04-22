@@ -183,12 +183,24 @@ export default {
             subActiveIndex: '0',
             submenu: [
               {
+                url: '/setting',
                 icon: 'el-icon-s-home',
-                name: '后台首页5'
+                name: '基础设置'
               },
               {
+                url: '/setting/shipping',
                 icon: 'el-icon-s-operation',
-                name: '商品列表5'
+                name: '物流设置'
+              },
+              {
+                url: '/setting/admin',
+                icon: 'el-icon-s-operation',
+                name: '管理员管理'
+              },
+              {
+                url: '/setting/transaction',
+                icon: 'el-icon-s-operation',
+                name: '交易设置'
               }
             ]
           }

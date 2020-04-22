@@ -233,7 +233,18 @@ export default {
       this.editIndex = index
       this.addMemberDialogVisible = true
     },
-    deleteType (index) {
+    deleteMember (index) {
+      this.$confirm('此操作将永久删除该会员，是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.tableData.members.splice(index, 1)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {})
     },
     search (param = null) {
       // 简单搜索，子组件传递字符串参数
@@ -262,7 +273,7 @@ export default {
       this.resetAddMemberForm()
     },
     confirm () {
-      console.log(this.addMemberForm)
+      // console.log(this.addMemberForm)
       this.$refs.addMemberForm.validate((valid) => {
         if (valid) {
           let action = ''
@@ -274,7 +285,7 @@ export default {
               lastLoginTime: '2019-07-24 15:52:56'
             }
             this.tableData.members.unshift({ ...extraData, ...this.addMemberForm })
-            console.log(this.tableData.members)
+            // console.log(this.tableData.members)
           } else {
             action = '修改'
             const member = this.tableData.members[this.editIndex]
