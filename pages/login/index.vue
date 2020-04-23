@@ -16,8 +16,10 @@
             </el-input>
           </el-form-item>
           <el-form-item>
-            <!--                <el-button type="primary" size="medium" @click.prevent="submitForm('loginForm')">立即登录</el-button>-->
-            <el-button type="primary" size="medium" @click.prevent="submitForm()">立即登录</el-button>
+            <!--<el-button type="primary" size="medium" @click.prevent="submitForm('loginForm')">立即登录</el-button>-->
+            <el-button type="primary" size="medium" :loading="loading" @click.prevent="submitForm()">
+              {{ loading ? '登录中...' : '立即登录' }}
+            </el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -36,6 +38,7 @@ export default {
   },
   data () {
     return {
+      loading: false,
       form: {
         userName: '',
         password: ''
@@ -57,6 +60,7 @@ export default {
       // this.$refs['loginForm'].validate((valid) => {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
+          this.loading = true
           this.$store.dispatch(
             'auth/authenticateUser',
             {
@@ -64,6 +68,7 @@ export default {
               password: this.form.password
             })
             .then(() => {
+              this.loading = false
               // this.$router.push('/home')
               // this.$axios.$get(
               //   '/product/recommends/')
@@ -74,6 +79,7 @@ export default {
             })
         } else {
           console.log('error submit!!')
+          this.loading = false
         }
       })
     },

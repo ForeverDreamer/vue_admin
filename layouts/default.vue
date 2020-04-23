@@ -15,17 +15,17 @@
 <!--            {{ item.name }}-->
 <!--          </el-menu-item>-->
 <!--        </nuxt-link>-->
-        <el-menu-item :index="index|numToString" v-for="(item, index) in headerNavMenu.categories" :key="index">
+        <el-menu-item :index="index|numToString" v-for="(item, index) in navMenu.menus" :key="index">
           <!--<nuxt-link :to="item.url">{{ item.name }}</nuxt-link>-->
           {{ item.name }}
         </el-menu-item>
-        <el-submenu :index="submenuIndex|numToString">
+        <el-submenu :index="userMenuIndex|numToString">
           <template slot="title">
-            <el-avatar size="small" :src="headerNavMenu.adminInfo.headImg"></el-avatar>
-            {{ headerNavMenu.adminInfo.name }}
+            <el-avatar size="small" :src="navMenu.adminInfo.headImg"></el-avatar>
+            {{ navMenu.adminInfo.name }}
           </template>
-          <el-menu-item :index="submenuIndex + '-1'">修改</el-menu-item>
-          <el-menu-item :index="submenuIndex + '-2'">退出</el-menu-item>
+          <el-menu-item :index="userMenuIndex + '-1'">修改</el-menu-item>
+          <el-menu-item :index="userMenuIndex + '-2'">退出</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-header>
@@ -61,6 +61,7 @@
 <script>
 // import config from '@/utils/mixins/config'
 // import common from '@/utils/mixins/common'
+import { mapState } from 'vuex'
 import ImageChooseDialog from '@/components/product/release/image-choose-dialog'
 import SkuDialog from '@/components/product/release/sku-dialog'
 
@@ -81,135 +82,135 @@ export default {
     return {
       selectMax: 0,
       // imageDialogVisible: false,
-      headerNavMenu: {
-        activeIndex: '0',
-        categories: [
-          {
-            name: '首页',
-            url: '/home',
-            subActiveIndex: '0',
-            submenu: [
-              {
-                url: '/home',
-                icon: 'el-icon-s-home',
-                name: '后台首页'
-              },
-              {
-                url: '/home/photo',
-                icon: 'el-icon-s-operation',
-                name: '相册管理'
-              },
-              {
-                url: '/home/ejabberd',
-                icon: 'el-icon-s-operation',
-                name: '即时通信Ejabberd'
-              }
-            ]
-          },
-          {
-            name: '商品',
-            url: '/product',
-            subActiveIndex: '0',
-            submenu: [
-              {
-                url: '/product',
-                icon: 'el-icon-s-claim',
-                name: '商品列表'
-              },
-              {
-                url: '/product/category',
-                icon: 'el-icon-s-help',
-                name: '分类列表'
-              },
-              {
-                url: '/product/sku',
-                icon: 'el-icon-s-grid',
-                name: '商品规格'
-              },
-              {
-                url: '/product/type',
-                icon: 'el-icon-menu',
-                name: '商品类型'
-              },
-              {
-                url: '/product/comment',
-                icon: 'el-icon-s-comment',
-                name: '商品评论'
-              }
-            ]
-          },
-          {
-            name: '订单',
-            url: '/order',
-            subActiveIndex: '0',
-            submenu: [
-              {
-                url: '/order',
-                icon: 'el-icon-s-home',
-                name: '订单列表'
-              },
-              {
-                url: '/order/invoice',
-                icon: 'el-icon-s-operation',
-                name: '发票管理'
-              },
-              {
-                url: '/order/service',
-                icon: 'el-icon-s-operation',
-                name: '售后服务'
-              }
-            ]
-          },
-          {
-            name: '会员',
-            url: '/member',
-            subActiveIndex: '0',
-            submenu: [
-              {
-                url: '/member',
-                icon: 'el-icon-s-home',
-                name: '会员列表'
-              },
-              {
-                url: '/member/level',
-                icon: 'el-icon-s-operation',
-                name: '会员等级'
-              }
-            ]
-          },
-          {
-            name: '设置',
-            url: '/setting',
-            subActiveIndex: '0',
-            submenu: [
-              {
-                url: '/setting',
-                icon: 'el-icon-s-home',
-                name: '基础设置'
-              },
-              {
-                url: '/setting/shipping',
-                icon: 'el-icon-s-operation',
-                name: '物流设置'
-              },
-              {
-                url: '/setting/admin',
-                icon: 'el-icon-s-operation',
-                name: '管理员管理'
-              },
-              {
-                url: '/setting/transaction',
-                icon: 'el-icon-s-operation',
-                name: '交易设置'
-              }
-            ]
-          }
-        ],
-        adminInfo: {
-          name: 'doer',
-          headImg: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-        }
-      },
+      // navMenu: {
+      //   activeIndex: '0',
+      //   menus: [
+      //     {
+      //       name: '首页',
+      //       url: '/home',
+      //       subActiveIndex: '0',
+      //       submenus: [
+      //         {
+      //           url: '/home',
+      //           icon: 'el-icon-s-home',
+      //           name: '后台首页'
+      //         },
+      //         {
+      //           url: '/home/photo',
+      //           icon: 'el-icon-s-operation',
+      //           name: '相册管理'
+      //         },
+      //         {
+      //           url: '/home/ejabberd',
+      //           icon: 'el-icon-s-operation',
+      //           name: '即时通信Ejabberd'
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       name: '商品',
+      //       url: '/product',
+      //       subActiveIndex: '0',
+      //       submenu: [
+      //         {
+      //           url: '/product',
+      //           icon: 'el-icon-s-claim',
+      //           name: '商品列表'
+      //         },
+      //         {
+      //           url: '/product/category',
+      //           icon: 'el-icon-s-help',
+      //           name: '分类列表'
+      //         },
+      //         {
+      //           url: '/product/sku',
+      //           icon: 'el-icon-s-grid',
+      //           name: '商品规格'
+      //         },
+      //         {
+      //           url: '/product/type',
+      //           icon: 'el-icon-menu',
+      //           name: '商品类型'
+      //         },
+      //         {
+      //           url: '/product/comment',
+      //           icon: 'el-icon-s-comment',
+      //           name: '商品评论'
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       name: '订单',
+      //       url: '/order',
+      //       subActiveIndex: '0',
+      //       submenu: [
+      //         {
+      //           url: '/order',
+      //           icon: 'el-icon-s-home',
+      //           name: '订单列表'
+      //         },
+      //         {
+      //           url: '/order/invoice',
+      //           icon: 'el-icon-s-operation',
+      //           name: '发票管理'
+      //         },
+      //         {
+      //           url: '/order/service',
+      //           icon: 'el-icon-s-operation',
+      //           name: '售后服务'
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       name: '会员',
+      //       url: '/member',
+      //       subActiveIndex: '0',
+      //       submenu: [
+      //         {
+      //           url: '/member',
+      //           icon: 'el-icon-s-home',
+      //           name: '会员列表'
+      //         },
+      //         {
+      //           url: '/member/level',
+      //           icon: 'el-icon-s-operation',
+      //           name: '会员等级'
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       name: '设置',
+      //       url: '/setting',
+      //       subActiveIndex: '0',
+      //       submenu: [
+      //         {
+      //           url: '/setting',
+      //           icon: 'el-icon-s-home',
+      //           name: '基础设置'
+      //         },
+      //         {
+      //           url: '/setting/shipping',
+      //           icon: 'el-icon-s-operation',
+      //           name: '物流设置'
+      //         },
+      //         {
+      //           url: '/setting/admin',
+      //           icon: 'el-icon-s-operation',
+      //           name: '管理员管理'
+      //         },
+      //         {
+      //           url: '/setting/transaction',
+      //           icon: 'el-icon-s-operation',
+      //           name: '交易设置'
+      //         }
+      //       ]
+      //     }
+      //   ],
+      //   adminInfo: {
+      //     name: 'doer',
+      //     headImg: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3665275444,3369039284&fm=26&gp=0.jpg'
+      //   }
+      // },
       breadArray: [
         {
           name: '后台首页',
@@ -227,32 +228,50 @@ export default {
     }
   },
   computed: {
-    submenuIndex () {
-      return this.headerNavMenu.categories.length + 1
+    ...mapState({
+      navMenu: state => state.menu.navMenu
+    }),
+    userMenuIndex () {
+      return this.navMenu.menus.length
     },
     asideMenu () {
-      return this.headerNavMenu.categories[this.headerNavMenu.activeIndex].submenu || []
+      return this.navMenu.menus[this.navMenu.activeIndex].submenus || []
     },
     asideActiveIndex: {
       get () {
-        return this.headerNavMenu.categories[this.headerNavMenu.activeIndex].subActiveIndex || '0'
+        return this.navMenu.menus[this.navMenu.activeIndex].subActiveIndex || '0'
       },
       set (val) {
-        this.headerNavMenu.categories[this.headerNavMenu.activeIndex].subActiveIndex = val
+        this.navMenu.menus[this.navMenu.activeIndex].subActiveIndex = val
       }
     }
   },
   methods: {
     headerSelect (key, keyPath) {
       console.log(key, keyPath)
-      this.headerNavMenu.activeIndex = key
+      if (key === this.userMenuIndex + '-1') {
+        this.editProfile()
+        return
+      } else if (key === this.userMenuIndex + '-2') {
+        this.logout()
+        return
+      }
+      this.navMenu.activeIndex = key
       // nuxt-link可点击区域仅限于文字，经常点不到，用户体验不好
-      const url = this.headerNavMenu.categories[key].url
+      const url = this.navMenu.menus[key].url
       this.$router.push(url)
     },
     asideSelect (key, keyPath) {
       this.asideActiveIndex = key
       this.$router.push(this.asideMenu[key].url)
+    },
+    editProfile () {
+      console.log('editProfile')
+    },
+    logout () {
+      console.log('logout')
+      this.$store.dispatch('auth/logout')
+      this.$router.push('/login')
     },
     // chooseImageconfirm (imageSlectedList) {
     //   console.log(imageSlectedList)

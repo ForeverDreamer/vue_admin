@@ -47,17 +47,21 @@ export const actions = {
         username: authData.username,
         password: authData.password
       })
-      .then((result) => {
-        console.log(result)
-        const token = result.data.token
+      .then((response) => {
+        console.log(response)
+        const token = response.data.token
         vuexContext.commit('setToken', token)
+        // sessionStorage在浏览器中存储 key/value 对，在关闭窗口或标签页之后将会删除这些数据
+        // localStorage在浏览器中存储 key/value 对，没有过期时间
         localStorage.setItem('token', token.access)
         localStorage.setItem('tokenExpiration', token.exp)
+        vuexContext.commit('menu/initNavMenu', response.data.navMenu)
         this.$router.push('/home')
       })
       .catch(e => console.log('login => ' + e))
   },
   initAuth (vuexContext) {
+    console.log('initAuth', vuexContext)
     const token = {}
     token.access = localStorage.getItem('token')
     token.exp = +localStorage.getItem('tokenExpiration')
@@ -68,6 +72,8 @@ export const actions = {
       return
     }
     vuexContext.commit('setToken', token)
+    const navMenu = localStorage.getItem('navMenu')
+    vuexContext.commit('menu/initNavMenu', navMenu)
   },
   logout (vuexContext) {
     vuexContext.commit('clearToken')
