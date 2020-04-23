@@ -69,8 +69,8 @@ export default {
     }
   },
   env: {
-    logo: 'UNI-ADMIN',
-    baseURL: process.env.BASE_URL || 'http://localhost:3000'
+    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    serverURL: 'http://localhost:8000'
   },
   // router: {
   //   middleware: 'log'

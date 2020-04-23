@@ -67,8 +67,10 @@ export default {
               username: this.form.userName,
               password: this.form.password
             })
-            .then(() => {
+            .then((navMenu) => {
+              console.log('submitForm', navMenu)
               this.loading = false
+              this.$store.commit('menu/initNavMenu', navMenu)
               // this.$router.push('/home')
               // this.$axios.$get(
               //   '/product/recommends/')

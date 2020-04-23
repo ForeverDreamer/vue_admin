@@ -21,7 +21,7 @@
         </el-menu-item>
         <el-submenu :index="userMenuIndex|numToString">
           <template slot="title">
-            <el-avatar size="small" :src="navMenu.adminInfo.headImg"></el-avatar>
+            <el-avatar size="small" :src="navMenu.adminInfo.avatar"></el-avatar>
             {{ navMenu.adminInfo.name }}
           </template>
           <el-menu-item :index="userMenuIndex + '-1'">修改</el-menu-item>
@@ -81,136 +81,6 @@ export default {
   data () {
     return {
       selectMax: 0,
-      // imageDialogVisible: false,
-      // navMenu: {
-      //   activeIndex: '0',
-      //   menus: [
-      //     {
-      //       name: '首页',
-      //       url: '/home',
-      //       subActiveIndex: '0',
-      //       submenus: [
-      //         {
-      //           url: '/home',
-      //           icon: 'el-icon-s-home',
-      //           name: '后台首页'
-      //         },
-      //         {
-      //           url: '/home/photo',
-      //           icon: 'el-icon-s-operation',
-      //           name: '相册管理'
-      //         },
-      //         {
-      //           url: '/home/ejabberd',
-      //           icon: 'el-icon-s-operation',
-      //           name: '即时通信Ejabberd'
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       name: '商品',
-      //       url: '/product',
-      //       subActiveIndex: '0',
-      //       submenu: [
-      //         {
-      //           url: '/product',
-      //           icon: 'el-icon-s-claim',
-      //           name: '商品列表'
-      //         },
-      //         {
-      //           url: '/product/category',
-      //           icon: 'el-icon-s-help',
-      //           name: '分类列表'
-      //         },
-      //         {
-      //           url: '/product/sku',
-      //           icon: 'el-icon-s-grid',
-      //           name: '商品规格'
-      //         },
-      //         {
-      //           url: '/product/type',
-      //           icon: 'el-icon-menu',
-      //           name: '商品类型'
-      //         },
-      //         {
-      //           url: '/product/comment',
-      //           icon: 'el-icon-s-comment',
-      //           name: '商品评论'
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       name: '订单',
-      //       url: '/order',
-      //       subActiveIndex: '0',
-      //       submenu: [
-      //         {
-      //           url: '/order',
-      //           icon: 'el-icon-s-home',
-      //           name: '订单列表'
-      //         },
-      //         {
-      //           url: '/order/invoice',
-      //           icon: 'el-icon-s-operation',
-      //           name: '发票管理'
-      //         },
-      //         {
-      //           url: '/order/service',
-      //           icon: 'el-icon-s-operation',
-      //           name: '售后服务'
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       name: '会员',
-      //       url: '/member',
-      //       subActiveIndex: '0',
-      //       submenu: [
-      //         {
-      //           url: '/member',
-      //           icon: 'el-icon-s-home',
-      //           name: '会员列表'
-      //         },
-      //         {
-      //           url: '/member/level',
-      //           icon: 'el-icon-s-operation',
-      //           name: '会员等级'
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       name: '设置',
-      //       url: '/setting',
-      //       subActiveIndex: '0',
-      //       submenu: [
-      //         {
-      //           url: '/setting',
-      //           icon: 'el-icon-s-home',
-      //           name: '基础设置'
-      //         },
-      //         {
-      //           url: '/setting/shipping',
-      //           icon: 'el-icon-s-operation',
-      //           name: '物流设置'
-      //         },
-      //         {
-      //           url: '/setting/admin',
-      //           icon: 'el-icon-s-operation',
-      //           name: '管理员管理'
-      //         },
-      //         {
-      //           url: '/setting/transaction',
-      //           icon: 'el-icon-s-operation',
-      //           name: '交易设置'
-      //         }
-      //       ]
-      //     }
-      //   ],
-      //   adminInfo: {
-      //     name: 'doer',
-      //     headImg: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3665275444,3369039284&fm=26&gp=0.jpg'
-      //   }
-      // },
       breadArray: [
         {
           name: '后台首页',
@@ -227,6 +97,9 @@ export default {
       ]
     }
   },
+  created () {
+    console.log(this.navMenu)
+  },
   computed: {
     ...mapState({
       navMenu: state => state.menu.navMenu
@@ -242,7 +115,13 @@ export default {
         return this.navMenu.menus[this.navMenu.activeIndex].subActiveIndex || '0'
       },
       set (val) {
-        this.navMenu.menus[this.navMenu.activeIndex].subActiveIndex = val
+        this.$store.commit(
+          'menu/changeSubmenu',
+          {
+            activeIndex: this.navMenu.activeIndex,
+            subActiveIndex: val
+          })
+        // this.navMenu.menus[this.navMenu.activeIndex].subActiveIndex = val
       }
     }
   },
@@ -256,7 +135,8 @@ export default {
         this.logout()
         return
       }
-      this.navMenu.activeIndex = key
+      this.$store.commit('menu/changeNavMenu', key)
+      // this.navMenu.activeIndex = key
       // nuxt-link可点击区域仅限于文字，经常点不到，用户体验不好
       const url = this.navMenu.menus[key].url
       this.$router.push(url)

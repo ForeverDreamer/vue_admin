@@ -55,8 +55,9 @@ export const actions = {
         // localStorage在浏览器中存储 key/value 对，没有过期时间
         localStorage.setItem('token', token.access)
         localStorage.setItem('tokenExpiration', token.exp)
-        vuexContext.commit('menu/initNavMenu', response.data.navMenu)
+        // this.$store.commit('menu/initNavMenu', response.data.navMenu)
         this.$router.push('/home')
+        return response.data.navMenu
       })
       .catch(e => console.log('login => ' + e))
   },
@@ -72,12 +73,13 @@ export const actions = {
       return
     }
     vuexContext.commit('setToken', token)
-    const navMenu = localStorage.getItem('navMenu')
-    vuexContext.commit('menu/initNavMenu', navMenu)
+    // const navMenu = localStorage.getItem('navMenu')
+    // this.$store.commit('menu/initNavMenu', navMenu)
   },
   logout (vuexContext) {
     vuexContext.commit('clearToken')
     localStorage.removeItem('token')
     localStorage.removeItem('tokenExpiration')
+    localStorage.removeItem('navMenu')
   }
 }

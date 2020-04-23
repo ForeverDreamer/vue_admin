@@ -5,6 +5,11 @@
 <script>
 export default {
   name: 'Server',
+  created () {
+    setTimeout(() => {
+      this.$router.push('/login')
+    }, 3000)
+  },
   layout: 'login'
 }
 </script>
