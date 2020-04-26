@@ -68,7 +68,7 @@ export default {
               password: this.form.password
             })
             .then((navMenu) => {
-              console.log('submitForm', navMenu)
+              // console.log('submitForm', navMenu)
               this.loading = false
               this.$store.commit('menu/initNavMenu', navMenu)
               // this.$router.push('/home')

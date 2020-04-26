@@ -62,7 +62,7 @@ export const actions = {
       .catch(e => console.log('login => ' + e))
   },
   initAuth (vuexContext) {
-    console.log('initAuth', vuexContext)
+    // console.log('initAuth', vuexContext)
     const token = {}
     token.access = localStorage.getItem('token')
     token.exp = +localStorage.getItem('tokenExpiration')

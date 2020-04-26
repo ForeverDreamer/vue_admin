@@ -98,6 +98,7 @@ export default {
     }
   },
   created () {
+    this.$store.commit('menu/restoreNavMenu')
     console.log(this.navMenu)
   },
   computed: {

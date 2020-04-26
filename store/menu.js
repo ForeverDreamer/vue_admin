@@ -8,10 +8,11 @@ export const getters = {
 
 export const mutations = {
   initNavMenu (state, navMenu) {
+    console.log('initNavMenu', navMenu)
     if (navMenu === null) {
       return
     }
-    state.navMenu.activeIndex = navMenu.active_index
+    state.navMenu.activeIndex = navMenu.admin_info.active_index
     state.navMenu.menus = navMenu.menus.map((menu) => {
       // const submenus = menu.submenus.map((submenu) => {
       //   return {
@@ -28,14 +29,18 @@ export const mutations = {
       }
     })
     state.navMenu.adminInfo = {
-      name: navMenu.admininfo.name,
-      avatar: process.env.serverURL + navMenu.admininfo.avatar
+      name: navMenu.admin_info.name,
+      avatar: process.env.serverURL + navMenu.admin_info.avatar
     }
     localStorage.setItem('navMenu', JSON.stringify(state.navMenu))
-    console.log('initNavMenu', state.navMenu, process.env.serverURL)
+    // console.log('initNavMenu', state.navMenu, process.env.serverURL)
   },
-  localNavMenu (state, navMenu) {
-    state.navMenu = navMenu
+  restoreNavMenu (state) {
+    const navMenu = localStorage.getItem('navMenu')
+    // console.log('[Middleware] initAuth', navMenu, Object.keys(context.store.state.menu.navMenu).length)
+    if (navMenu !== null && Object.keys(state.navMenu).length === 0) {
+      state.navMenu = JSON.parse(navMenu)
+    }
   },
   changeNavMenu (state, index) {
     state.navMenu.activeIndex = index
