@@ -138,7 +138,7 @@
     <el-footer class="border-top ml-3 d-flex align-items-center px-0">
       <div style="width: 183px" class="h-100 d-flex align-items-center justify-content-center flex-shrink-0 border-right">
         <el-button-group>
-          <el-button icon="el-icon-arrow-left" size="mini">
+          <el-button icon="el-icon-arrow-left" size="mini" :disabled="currentAlbumPage === 1">
             上一页
           </el-button>
           <el-button size="mini">
@@ -150,7 +150,7 @@
       <!-- flex: 2 2 10%; -->
       <div class="flex-grow-1 px-2">
         <el-pagination
-          :current-page="currentPage"
+          :current-page="currentAlbumPage"
           :page-sizes="[100, 200, 300, 400]"
           :page-size="100"
           layout="total, sizes, prev, pager, next, jumper"
@@ -181,6 +181,7 @@ export default {
         keyword: '图片数量'
       },
       activeIndex: 0,
+      currentAlbumPage: 1,
       albums: [],
       dialogVisible: false,
       editForm: {
@@ -188,8 +189,7 @@ export default {
         order: '',
         editIndex: -1
       },
-      uploadDialogVisible: false,
-      currentPage: 1
+      uploadDialogVisible: false
     }
   },
   computed: {
@@ -205,7 +205,9 @@ export default {
       for (let i = 0; i < 20; i++) {
         this.albums.push({
           name: '相册' + i,
+          photos: [],
           num: Math.floor(Math.random() * 100),
+          currentPhotoPage: 1,
           order: 0
         })
       }

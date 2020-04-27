@@ -56,7 +56,7 @@ export const actions = {
         localStorage.setItem('token', token.access)
         localStorage.setItem('tokenExpiration', token.exp)
         // this.$store.commit('menu/initNavMenu', response.data.navMenu)
-        this.$router.push('/home')
+        this.$router.push('/home/')
         return response.data.navMenu
       })
       .catch(e => console.log('login => ' + e))

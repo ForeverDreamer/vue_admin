@@ -33,7 +33,7 @@ export default {
   beforeCreate () {
     if (this.$store.getters['auth/isAuthenticated']) {
       console.log('login -> beforeCreate')
-      this.$router.push('/home')
+      this.$router.push('/home/')
     }
   },
   data () {
@@ -71,7 +71,7 @@ export default {
               // console.log('submitForm', navMenu)
               this.loading = false
               this.$store.commit('menu/initNavMenu', navMenu)
-              // this.$router.push('/home')
+              // this.$router.push('/home/')
               // this.$axios.$get(
               //   '/product/recommends/')
               //   .then((result) => {

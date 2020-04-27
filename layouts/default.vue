@@ -76,7 +76,7 @@ export default {
     }
   },
   // mixins: [config, common],
-  middleware: ['init-auth', 'auth', 'log'],
+  middleware: ['init-auth', 'auth', 'route-guard'],
   // mixins: [common],
   data () {
     return {
@@ -98,8 +98,7 @@ export default {
     }
   },
   created () {
-    this.$store.commit('menu/restoreNavMenu')
-    console.log(this.navMenu)
+    console.log('default created', this.navMenu)
   },
   computed: {
     ...mapState({
@@ -152,7 +151,7 @@ export default {
     logout () {
       console.log('logout')
       this.$store.dispatch('auth/logout')
-      this.$router.push('/login')
+      this.$router.push('/login/')
     },
     // chooseImageconfirm (imageSlectedList) {
     //   console.log(imageSlectedList)

@@ -1,13 +1,13 @@
 <template>
-  <h1>用户名或密码错误！</h1>
+  <h1>404 页面不存在！</h1>
 </template>
 
 <script>
 export default {
-  name: 'Auth',
+  name: '404',
   created () {
     setTimeout(() => {
-      this.$router.push('/login/')
+      this.$router.push('/home/')
     }, 3000)
   },
   layout: 'login'

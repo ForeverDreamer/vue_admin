@@ -3,12 +3,15 @@ export const state = () => ({
 })
 
 export const getters = {
-
+  routePermitted: state => (url) => {
+    console.log('routePermitted', url, state.navMenu)
+    return state.navMenu.permitted_routes.includes(url)
+  }
 }
 
 export const mutations = {
   initNavMenu (state, navMenu) {
-    console.log('initNavMenu', navMenu)
+    // console.log('initNavMenu', navMenu)
     if (navMenu === null) {
       return
     }
@@ -32,11 +35,14 @@ export const mutations = {
       name: navMenu.admin_info.name,
       avatar: process.env.serverURL + navMenu.admin_info.avatar
     }
+    navMenu.permitted_routes.push('/')
+    state.navMenu.permitted_routes = navMenu.permitted_routes
     localStorage.setItem('navMenu', JSON.stringify(state.navMenu))
-    // console.log('initNavMenu', state.navMenu, process.env.serverURL)
+    console.log('initNavMenu', state.navMenu, process.env.serverURL)
   },
   restoreNavMenu (state) {
     const navMenu = localStorage.getItem('navMenu')
+    // console.log('restoreNavMenu', navMenu)
     // console.log('[Middleware] initAuth', navMenu, Object.keys(context.store.state.menu.navMenu).length)
     if (navMenu !== null && Object.keys(state.navMenu).length === 0) {
       state.navMenu = JSON.parse(navMenu)
