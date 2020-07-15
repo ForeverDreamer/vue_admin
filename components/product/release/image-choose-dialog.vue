@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import AlbumItem from '@/components/image/album-item'
+import AlbumItem from '~/components/image/album-item'
 
 export default {
   name: 'ImageChooseDialog',

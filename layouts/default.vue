@@ -8,20 +8,21 @@
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b"
-        @select="headerSelect">
-<!--        <nuxt-link v-for="(item, index) in headerNavMenu.categories" :key="index" :to="item.url">-->
+        @select="headerSelect"
+      >
+        <nuxt-link v-for="(item, index) in navMenu.menus" :key="index" tag="el-menu-item" :to="item.url">
 <!--          <el-menu-item :index="index|numToString">-->
-<!--            &lt;!&ndash;<nuxt-link :to="item.url">{{ item.name }}</nuxt-link>&ndash;&gt;-->
-<!--            {{ item.name }}-->
+            <!--<nuxt-link :to="item.url">{{ item.name }}</nuxt-link>-->
+            {{ item.name }}
 <!--          </el-menu-item>-->
-<!--        </nuxt-link>-->
-        <el-menu-item :index="index|numToString" v-for="(item, index) in navMenu.menus" :key="index">
-          <!--<nuxt-link :to="item.url">{{ item.name }}</nuxt-link>-->
-          {{ item.name }}
-        </el-menu-item>
+        </nuxt-link>
+<!--        <el-menu-item :index="index|numToString" v-for="(item, index) in navMenu.menus" :key="index">-->
+<!--          &lt;!&ndash;<nuxt-link :to="item.url">{{ item.name }}</nuxt-link>&ndash;&gt;-->
+<!--          {{ item.name }}-->
+<!--        </el-menu-item>-->
         <el-submenu :index="userMenuIndex|numToString">
           <template slot="title">
-            <el-avatar size="small" :src="navMenu.adminInfo.avatar"></el-avatar>
+            <el-avatar size="small" :src="navMenu.adminInfo.avatar" />
             {{ navMenu.adminInfo.name }}
           </template>
           <el-menu-item :index="userMenuIndex + '-1'">修改</el-menu-item>
@@ -59,11 +60,11 @@
 </template>
 
 <script>
-// import config from '@/utils/mixins/config'
-// import common from '@/utils/mixins/common'
+// import config from '~/utils/mixins/config'
+// import common from '~/utils/mixins/common'
 import { mapState } from 'vuex'
-import ImageChooseDialog from '@/components/product/release/image-choose-dialog'
-import SkuDialog from '@/components/product/release/sku-dialog'
+import ImageChooseDialog from '~/components/product/release/image-choose-dialog'
+import SkuDialog from '~/components/product/release/sku-dialog'
 
 export default {
   components: {

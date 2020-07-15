@@ -51,7 +51,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import SkuCardChild from '@/components/product/release/sku-card-child'
+import SkuCardChild from '~/components/product/release/sku-card-child'
 
 export default {
   name: 'SkuCard',

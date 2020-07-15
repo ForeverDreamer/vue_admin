@@ -3,10 +3,10 @@ import Vue from 'vue'
 import strophe from 'strophe.js'
 import echarts from 'echarts' // 引入echarts
 import VueDND from 'awe-dnd'
-import conf, { doSomething } from '@/utils/common/config'
-import ejabberdInfo from '@/utils/common/ejabberd-info'
-// import { dateFilter } from '@/utils/filters/date-filter'
-import '@/utils/filters/register'
+import conf, { doSomething } from '~/utils/common/config'
+import ejabberdInfo from '~/utils/common/ejabberd-info'
+// import { dateFilter } from '~/utils/filters/date-filter'
+import '~/utils/filters/register'
 
 doSomething()
 

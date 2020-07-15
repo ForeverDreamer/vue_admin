@@ -122,11 +122,11 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import BasicSetup from '@/components/product/release/basic-setup'
-import SingleAttr from '@/components/product/release/single-attr'
-import SkuCard from '@/components/product/release/sku-card'
-import SkuTable from '@/components/product/release/sku-table'
-import Tinymce from '@/components/common/tinymce'
+import BasicSetup from '~/components/product/release/basic-setup'
+import SingleAttr from '~/components/product/release/single-attr'
+import SkuCard from '~/components/product/release/sku-card'
+import SkuTable from '~/components/product/release/sku-table'
+import Tinymce from '~/components/common/tinymce'
 
 export default {
   name: 'Release',

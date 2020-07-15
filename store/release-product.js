@@ -1,4 +1,4 @@
-import $helper from '@/utils/common/helper'
+import $helper from '~/utils/common/helper'
 
 export const state = () => ({
   // 基础设置
